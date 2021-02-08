@@ -1,0 +1,32 @@
+.DS_Store
+logistics-admin/node_modules
+logistics-admin/dist
+logistics-admin/assets
+logistics-admin/public/img
+logistics-admin/package-lock.json
+
+user-admin/node_modules
+user-admin/dist
+user-admin/assets
+user-admin/public/img
+user-admin/package-lock.json
+
+# local env files
+.env
+.env.local
+.env.*.local
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor directories and files
+.idea
+.vscode
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
