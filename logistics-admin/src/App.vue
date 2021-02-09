@@ -1,22 +1,28 @@
 <template>
   <v-app>
+  
+   <v-system-bar color="black" app></v-system-bar>
+   
+   <nav-bar></nav-bar>
+   <nav-drawer></nav-drawer>
+   
     <v-main>
-      <div>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Id ducimus
-        praesentium omnis nam quas sit sint ab nostrum in. Laboriosam,
-        exercitationem consequuntur dolores et perspiciatis quaerat incidunt
-        similique beatae consectetur.
-      </div>
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
+import NavBar from "./components/nav/NavBar";
+import NavDrawer from "./components/nav/NavDrawer";
 export default {
   name: "App",
   data: () => ({}),
   methods: {},
   mounted() {},
-  components: {}
+  components: {
+    NavBar,
+    NavDrawer
+  }
 };
 </script>
