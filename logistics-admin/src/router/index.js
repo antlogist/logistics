@@ -23,7 +23,7 @@ export function createRouter() {
         path: "/orders",
         name: "Orders",
         component: Orders
-      },
+      }
     ]
   });
 }

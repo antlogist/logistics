@@ -1,3 +1,3 @@
 export default {
-    DRAWER: "DRAWER",
+  DRAWER: "DRAWER"
 };
