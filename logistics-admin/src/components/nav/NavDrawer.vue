@@ -9,7 +9,7 @@
     <v-list nav dense>
       <v-list-item-group
         v-model="group"
-        active-class="deep-purple--text text--accent-4"
+        active-class="lime"
       >
         <v-list-item
           v-for="(item, index) in navItems"

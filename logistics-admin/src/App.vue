@@ -8,12 +8,16 @@
     <v-main>
       <router-view></router-view>
     </v-main>
+    
+    <Footer></Footer>
+    
   </v-app>
 </template>
 
 <script>
 import NavBar from "./components/nav/NavBar";
 import NavDrawer from "./components/nav/NavDrawer";
+import Footer from "./components/footer/Footer";
 export default {
   name: "App",
   data: () => ({}),
@@ -21,7 +25,8 @@ export default {
   mounted() {},
   components: {
     NavBar,
-    NavDrawer
+    NavDrawer,
+    Footer,
   }
 };
 </script>

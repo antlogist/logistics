@@ -1,5 +1,5 @@
 <template>
-  <v-container>
+  <v-container class="mb-5">
     <v-toolbar flat class="mb-0">
       <v-select
         v-model="type"
@@ -10,17 +10,17 @@
         class="ma-2"
         label="type"
         style="max-width: 320px;"
+        color="#9fc51c"
       ></v-select>
     </v-toolbar>
     <v-toolbar class="mb-3" flat>
       <v-btn
         fab
-        text
-        small
-        color="grey darken-2"
+        x-small
+        color="#9fc51c"
         @click="$refs.calendar.prev()"
       >
-        <v-icon small>
+        <v-icon x-small>
           mdi-chevron-left
         </v-icon>
       </v-btn>
@@ -31,18 +31,21 @@
       <v-spacer></v-spacer>
       <v-btn
         fab
-        text
-        small
-        color="grey darken-2"
+        x-small
+        color="#9fc51c"
         @click="$refs.calendar.next()"
       >
-        <v-icon small>
+        <v-icon x-small>
           mdi-chevron-right
         </v-icon>
       </v-btn>
     </v-toolbar>
     <v-sheet height="600">
-      <v-calendar ref="calendar" v-model="focus" :type="type"></v-calendar>
+      <v-calendar
+      ref="calendar"
+      color="#9fc51c"
+      v-model="focus"
+      :type="type"></v-calendar>
     </v-sheet>
   </v-container>
 </template>
