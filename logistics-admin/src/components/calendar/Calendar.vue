@@ -1,5 +1,17 @@
 <template>
   <v-container>
+    <v-toolbar flat class="mb-0">
+      <v-select
+        v-model="type"
+        :items="types"
+        dense
+        outlined
+        hide-details
+        class="ma-2"
+        label="type"
+        style="max-width: 320px;"
+      ></v-select>
+    </v-toolbar>
     <v-toolbar class="mb-3" flat>
       <v-btn
         fab
@@ -12,10 +24,11 @@
           mdi-chevron-left
         </v-icon>
       </v-btn>
+      <v-spacer></v-spacer>
       <v-toolbar-title v-if="$refs.calendar">
         {{ $refs.calendar.title }}
       </v-toolbar-title>
-
+      <v-spacer></v-spacer>
       <v-btn
         fab
         text
@@ -29,7 +42,7 @@
       </v-btn>
     </v-toolbar>
     <v-sheet height="600">
-      <v-calendar ref="calendar" v-model="focus"></v-calendar>
+      <v-calendar ref="calendar" v-model="focus" :type="type"></v-calendar>
     </v-sheet>
   </v-container>
 </template>
