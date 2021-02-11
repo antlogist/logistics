@@ -1,3 +1,4 @@
 export default {
-  DRAWER: "DRAWER"
+  DRAWER: "DRAWER",
+  SHOW_DIALOG: "SHOW_DIALOG"
 };

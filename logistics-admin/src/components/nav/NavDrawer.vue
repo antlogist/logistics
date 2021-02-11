@@ -7,10 +7,7 @@
     @click:outside="toggleDrawer(false)"
   >
     <v-list nav dense>
-      <v-list-item-group
-        v-model="group"
-        active-class="lime"
-      >
+      <v-list-item-group v-model="group" active-class="lime">
         <v-list-item
           v-for="(item, index) in navItems"
           :key="index"

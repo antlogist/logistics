@@ -1,5 +1,5 @@
 <template>
-  <v-footer padless app dark>
+  <v-footer padless dark>
     <v-col class="text-center" cols="12">
       <small>
         {{ new Date().getFullYear() }} — <strong>Wildg Garlic Catering</strong>
@@ -9,8 +9,7 @@
 </template>
 
 <script>
-  export default {
-    name: "Footer"
-  }
-
+export default {
+  name: "Footer"
+};
 </script>

@@ -14,12 +14,7 @@
       ></v-select>
     </v-toolbar>
     <v-toolbar class="mb-3" flat>
-      <v-btn
-        fab
-        x-small
-        color="#9fc51c"
-        @click="$refs.calendar.prev()"
-      >
+      <v-btn fab x-small color="#9fc51c" @click="$refs.calendar.prev()">
         <v-icon x-small>
           mdi-chevron-left
         </v-icon>
@@ -29,12 +24,7 @@
         {{ $refs.calendar.title }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn
-        fab
-        x-small
-        color="#9fc51c"
-        @click="$refs.calendar.next()"
-      >
+      <v-btn fab x-small color="#9fc51c" @click="$refs.calendar.next()">
         <v-icon x-small>
           mdi-chevron-right
         </v-icon>
@@ -42,15 +32,19 @@
     </v-toolbar>
     <v-sheet height="600">
       <v-calendar
-      ref="calendar"
-      color="#9fc51c"
-      v-model="focus"
-      :type="type"></v-calendar>
+        ref="calendar"
+        color="#9fc51c"
+        v-model="focus"
+        :type="type"
+        @click:date="openDialog"
+      >
+      </v-calendar>
     </v-sheet>
   </v-container>
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "Calendar",
   data: () => ({
@@ -85,8 +79,12 @@ export default {
     this.focus = today.toISOString().substring(0, 10);
   },
   methods: {
+    ...mapActions("calendar", ["openDayDialog"]),
     fetchEvents() {
       console.log("fetchEvents");
+    },
+    openDialog(data) {
+      this.openDayDialog(data);
     }
   }
 };
