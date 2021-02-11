@@ -37,7 +37,23 @@
         v-model="focus"
         :type="type"
         @click:date="openDialog"
+        @change="fetchEvents"
       >
+        <template v-slot:day-label="{ past, day, date }">
+          <template v-if="past">
+            <div style="background-color: #f7f7f7">
+              <v-btn fab small elevation="0" @click="openDialog(date)">{{
+                day
+              }}</v-btn>
+            </div>
+          </template>
+        </template>
+        <template v-slot:day="{ past }">
+          <template v-if="past">
+            <v-row class="fill-height" style="background-color: #f7f7f7">
+            </v-row>
+          </template>
+        </template>
       </v-calendar>
     </v-sheet>
   </v-container>
@@ -74,14 +90,15 @@ export default {
     events: []
   }),
   mounted() {
-    const timeElapsed = Date.now();
-    const today = new Date(timeElapsed);
+    // Set today
+    const now = Date.now();
+    const today = new Date(now);
     this.focus = today.toISOString().substring(0, 10);
   },
   methods: {
     ...mapActions("calendar", ["openDayDialog"]),
-    fetchEvents() {
-      console.log("fetchEvents");
+    fetchEvents({ start, end }) {
+      console.log("fetchEvents", start, end);
     },
     openDialog(data) {
       this.openDayDialog(data);
