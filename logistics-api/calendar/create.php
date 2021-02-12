@@ -10,28 +10,28 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 include_once '../config/database.php';
 
 // Closed object included
-include_once '../objects/closed.php';
+include_once '../objects/calendar.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
-$closed = new Closed($db);
+$calendar = new Calendar($db);
  
 // Get sended data
 $data = json_decode(file_get_contents("php://input"));
  
 // If data is not empty
 if (
-    !empty($data->cal_date) &&
+    !empty($data->date) &&
     !empty($data->date_title)
 ) {
 
     // set calendar properties
-    $closed->cal_date = $data->cal_date;
-    $closed->date_title = $data->date_title;
+    $calendar->date = $data->date;
+    $calendar->date_title = $data->date_title;
 
     // Record creation
-    if($closed->create()) {
+    if($calendar->create()) {
 
         // Set answer code - 201 Created 
         http_response_code(201);
@@ -46,7 +46,7 @@ if (
         // Set answer code - 503 Service unavailable
         http_response_code(503);
 
-        // сообщим пользователю 
+        // Notification 
         echo json_encode(array("message" => "Unable to create entry."), JSON_UNESCAPED_UNICODE);
     }
 }
