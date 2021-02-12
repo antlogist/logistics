@@ -4,6 +4,7 @@ logistics-admin/dist
 logistics-admin/assets
 logistics-admin/public/img
 logistics-admin/package-lock.json
+logistics-api/config
 
 user-admin/node_modules
 user-admin/dist
