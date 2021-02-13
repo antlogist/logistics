@@ -19,8 +19,11 @@ const calendarStore = {
     [SHOW_DIALOG](state, bool) {
       state.isDayDialogShow = bool;
     },
-    [DAY_OFFS](state, value) {
-      state.dayOffs = value;
+    [DAY_OFFS](state, arr) {
+      state.dayOffs = [];
+      arr.map(({ date }) => {
+        state.dayOffs.push(date);
+      });
     }
   },
   actions: {

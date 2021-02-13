@@ -41,12 +41,41 @@
         @click:date="openDialog"
         @change="fetchEvents"
       >
-        <template v-slot:day-label="{ past, day, date }">
-          <template v-if="past">
+        <template v-slot:day-label="{ today, past, day, date }">
+          <template v-if="past & !dayOffs.includes(date)">
+            <!--If past and not day off-->
             <div style="background-color: #f7f7f7">
               <v-btn fab small elevation="0" @click="openDialog({ date })">{{
                 day
               }}</v-btn>
+            </div>
+          </template>
+
+          <template v-else-if="!past & dayOffs.includes(date)">
+            <!--If day off and not past-->
+            <div>
+              <v-btn
+                color="red"
+                fab
+                small
+                elevation="0"
+                @click="openDialog({ date })"
+                >{{ day }}</v-btn
+              >
+            </div>
+          </template>
+
+          <template v-else-if="past & dayOffs.includes(date)">
+            <!--If day off and past-->
+            <div style="background-color: #f7f7f7">
+              <v-btn
+                color="red"
+                fab
+                small
+                elevation="0"
+                @click="openDialog({ date })"
+                >{{ day }}</v-btn
+              >
             </div>
           </template>
         </template>
