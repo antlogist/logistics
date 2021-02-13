@@ -5,17 +5,17 @@ header("Content-Type: application/json; charset=UTF-8");
 
 // DB connection and object including
 include_once '../config/database.php';
-include_once '../objects/closed.php';
+include_once '../objects/calendar.php';
 
 // Get DB connection
 $database = new Database();
 $db = $database->getConnection();
 
 // Object init
-$closed = new Closed($db);
+$calendar = new Calendar($db);
  
 // Closed dates request
-$stmt = $closed->read();
+$stmt = $calendar->read();
 $num = $stmt->rowCount();
 
 // If records qty more than 0
@@ -23,7 +23,7 @@ if ($num>0) {
 
     // Dates array
     $dates_arr=array();
-    $dates_arr["records"]=array();
+    $dates_arr["dates"]=array();
 
     // Get content of the table
     while ($row = $stmt->fetch(PDO::FETCH_ASSOC)){
@@ -33,11 +33,11 @@ if ($num>0) {
 
         $date_item=array(
             "date_id" => $date_id,
-            "cal_date" => $cal_date,
+            "date" => $date,
             "date_title" => html_entity_decode($date_title),
         );
 
-        array_push($dates_arr["records"], $date_item);
+        array_push($dates_arr["dates"], $date_item);
     }
 
     // Set answer code - 200 OK 
