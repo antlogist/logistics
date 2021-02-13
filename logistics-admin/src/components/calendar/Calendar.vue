@@ -12,7 +12,8 @@
         style="max-width: 320px;"
         color="#9fc51c"
       ></v-select>
-      <v-btn @click="fetchDayoffs($refs.calendar.title)">fetchDayoffs</v-btn>
+      <v-btn @click="fetchDayoffs($refs.calendar.value)">fetchDayoffs</v-btn>
+      <h5>{{ dayOffs }}</h5>
     </v-toolbar>
     <v-toolbar class="mb-3" flat>
       <v-btn fab x-small color="#9fc51c" @click="$refs.calendar.prev()">
@@ -61,7 +62,7 @@
 </template>
 
 <script>
-import { mapActions } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Calendar",
   data: () => ({
@@ -95,6 +96,12 @@ export default {
     const now = Date.now();
     const today = new Date(now);
     this.focus = today.toISOString().substring(0, 10);
+    // Fetch dayoffs on mounted
+    const month = today.toISOString().substring(0, 7);
+    this.fetchDayoffs(month);
+  },
+  computed: {
+    ...mapGetters("calendar", ["dayOffs"])
   },
   methods: {
     ...mapActions("calendar", ["openDayDialog", "fetchDayoffs"]),

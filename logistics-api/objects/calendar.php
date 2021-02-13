@@ -10,6 +10,7 @@ class Calendar {
     public $date_id;
     public $date;
     public $date_title;
+    public $month;
 
     // DB connection constructor
     public function __construct($db){
@@ -21,9 +22,11 @@ class Calendar {
 
         // Select all of the records
         $query = "SELECT
-                    date_id, date, date_title
+                    date_id, date, date_title, month
                 FROM
                     " . $this->table_name . "
+                WHERE
+                  month = '" . $this->month . "'
                 ORDER BY
                     date DESC";
 
