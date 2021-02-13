@@ -12,6 +12,7 @@
         style="max-width: 320px;"
         color="#9fc51c"
       ></v-select>
+      <v-btn @click="fetchDayoffs($refs.calendar.title)">fetchDayoffs</v-btn>
     </v-toolbar>
     <v-toolbar class="mb-3" flat>
       <v-btn fab x-small color="#9fc51c" @click="$refs.calendar.prev()">
@@ -42,7 +43,7 @@
         <template v-slot:day-label="{ past, day, date }">
           <template v-if="past">
             <div style="background-color: #f7f7f7">
-              <v-btn fab small elevation="0" @click="openDialog(date)">{{
+              <v-btn fab small elevation="0" @click="openDialog({ date })">{{
                 day
               }}</v-btn>
             </div>
@@ -96,7 +97,7 @@ export default {
     this.focus = today.toISOString().substring(0, 10);
   },
   methods: {
-    ...mapActions("calendar", ["openDayDialog"]),
+    ...mapActions("calendar", ["openDayDialog", "fetchDayoffs"]),
     fetchEvents({ start, end }) {
       console.log("fetchEvents", start, end);
     },

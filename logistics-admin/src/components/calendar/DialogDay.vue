@@ -10,6 +10,7 @@
               color="red darken-3"
               label="Day off"
             ></v-switch>
+            <v-btn @click="createDayoff(currentDate)">Create</v-btn>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione
             nam fugiat repellat. In ratione ad veniam nihil deleniti velit
             possimus delectus, assumenda ea animi minus repellendus deserunt
@@ -22,7 +23,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import DialogDayToolbar from "@/components/calendar/dialog-day/DialogDayToolbar";
 export default {
   name: "DialogDay",
@@ -30,7 +31,10 @@ export default {
     dayOff: false
   }),
   computed: {
-    ...mapGetters("calendar", ["isDayDialogShow"])
+    ...mapGetters("calendar", ["isDayDialogShow", "currentDate"])
+  },
+  methods: {
+    ...mapActions("calendar", ["createDayoff"])
   },
   components: {
     DialogDayToolbar

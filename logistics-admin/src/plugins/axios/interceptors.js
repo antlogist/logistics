@@ -1,4 +1,7 @@
 function setParams(config) {
+  console.log(config);
+  const params = config.params || {};
+  config.params = Object.assign(params, {});
   return config;
 }
 

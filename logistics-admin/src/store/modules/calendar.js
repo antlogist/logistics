@@ -1,4 +1,6 @@
+import calendarApi from "@/services/calendarApi";
 import mutations from "@/store/mutations";
+
 const { SHOW_DIALOG } = mutations;
 
 const calendarStore = {
@@ -25,6 +27,21 @@ const calendarStore = {
     closeDayDialog({ commit, state }) {
       console.log(state.isDayDialogShow);
       commit("SHOW_DIALOG", false);
+    },
+    async fetchDayoffs({ dispatch, commit }, month) {
+      console.log(dispatch, commit, month);
+      const response = await calendarApi.fetchDayoffs(month);
+      console.log(response);
+    },
+    async createDayoff({ dispatch, commit }, date) {
+      console.log(dispatch, commit, date);
+      //      try {
+      //
+      //      } catch(err) {
+      //        console.log(err);
+      //      } finally {
+      //
+      //      }
     }
   }
 };
