@@ -1,7 +1,7 @@
 <?php
 class Calendar {
 
-    // Table 'closed' connection
+    // Table 'calendar_closed' connection
     private $conn;
     private $table_name = "calendar_closed";
   
