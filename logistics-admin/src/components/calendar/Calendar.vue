@@ -40,10 +40,11 @@
         @click:date="openDialog"
         @change="fetchEvents"
       >
+        <!--Month label template-->
         <template v-slot:day-label="{ today, past, day, date }">
           <template v-if="past & !dayOffs.includes(date)">
-            <!--If past and not day off-->
-            <div style="background-color: #f7f7f7">
+            <!-- If past and not day off-->
+            <div>
               <v-btn fab small elevation="0" @click="openDialog({ date })">{{
                 day
               }}</v-btn>
@@ -66,11 +67,48 @@
 
           <template v-else-if="past & dayOffs.includes(date)">
             <!--If day off and past-->
-            <div style="background-color: #f7f7f7">
+            <div>
               <v-btn
                 color="red"
                 fab
                 small
+                elevation="0"
+                @click="openDialog({ date })"
+                >{{ day }}</v-btn
+              >
+            </div>
+          </template>
+        </template>
+        <!--Week and day label template-->
+        <template v-slot:day-label-header="{ today, past, day, date }">
+          <template v-if="past & !dayOffs.includes(date)">
+            <!-- If past and not day off-->
+            <div>
+              <v-btn fab small elevation="0" @click="openDialog({ date })">{{
+                day
+              }}</v-btn>
+            </div>
+          </template>
+
+          <template v-else-if="!past & dayOffs.includes(date)">
+            <!--If day off and not past-->
+            <div>
+              <v-btn
+                color="red"
+                fab
+                elevation="0"
+                @click="openDialog({ date })"
+                >{{ day }}</v-btn
+              >
+            </div>
+          </template>
+
+          <template v-else-if="past & dayOffs.includes(date)">
+            <!--If day off and past-->
+            <div>
+              <v-btn
+                color="red"
+                fab
                 elevation="0"
                 @click="openDialog({ date })"
                 >{{ day }}</v-btn
@@ -159,6 +197,7 @@ export default {
       console.log(date);
       //      this.fetchDayoffs(month);
     }
-  }
+  },
+  components: {}
 };
 </script>
