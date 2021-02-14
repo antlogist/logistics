@@ -12,11 +12,10 @@
         style="max-width: 320px;"
         color="#9fc51c"
       ></v-select>
-      <v-btn @click="fetchDayoffs($refs.calendar.value)">fetchDayoffs</v-btn>
       <h5>{{ dayOffs }}</h5>
     </v-toolbar>
     <v-toolbar class="mb-3" flat>
-      <v-btn fab x-small color="#9fc51c" @click="$refs.calendar.prev()">
+      <v-btn fab x-small color="#9fc51c" @click="prev">
         <v-icon x-small>
           mdi-chevron-left
         </v-icon>
@@ -26,7 +25,7 @@
         {{ $refs.calendar.title }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn fab x-small color="#9fc51c" @click="$refs.calendar.next()">
+      <v-btn fab x-small color="#9fc51c" @click="next">
         <v-icon x-small>
           mdi-chevron-right
         </v-icon>
@@ -126,19 +125,39 @@ export default {
     const today = new Date(now);
     this.focus = today.toISOString().substring(0, 10);
     // Fetch dayoffs on mounted
-    const month = today.toISOString().substring(0, 7);
-    this.fetchDayoffs(month);
+    this.fetchDayoffs([today]);
   },
   computed: {
     ...mapGetters("calendar", ["dayOffs"])
   },
   methods: {
     ...mapActions("calendar", ["openDayDialog", "fetchDayoffs"]),
+    // On Interval changing
     fetchEvents({ start, end }) {
-      console.log("fetchEvents", start, end);
+      const monthOne = start.date.substring(0, 7);
+      const monthTwo = end.date.substring(0, 7);
+      if (monthOne === monthTwo) {
+        this.fetchDayoffs([monthOne]);
+      } else {
+        this.fetchDayoffs([monthOne, monthTwo]);
+      }
+
+      console.log(monthOne, monthTwo);
     },
     openDialog(data) {
       this.openDayDialog(data);
+    },
+    prev() {
+      this.$refs.calendar.prev();
+    },
+    next() {
+      this.$refs.calendar.next();
+    },
+    refreshDayOffs() {
+      const date = this.$refs.calendar.lastEnd.date;
+      //      const month = date.substring(0, 7);
+      console.log(date);
+      //      this.fetchDayoffs(month);
     }
   }
 };

@@ -20,7 +20,6 @@ const calendarStore = {
       state.isDayDialogShow = bool;
     },
     [DAY_OFFS](state, arr) {
-      state.dayOffs = [];
       arr.map(({ date }) => {
         state.dayOffs.push(date);
       });
@@ -36,16 +35,34 @@ const calendarStore = {
       console.log(state.isDayDialogShow);
       commit("SHOW_DIALOG", false);
     },
-    async fetchDayoffs({ dispatch, commit }, date) {
-      const month = date.substring(0, 7);
-      console.log(dispatch, commit, month);
+    async fetchDayoffs({ state, commit }, datesArr) {
+      // Clean dayOffs state
+      state.dayOffs = [];
+      //      const month = date.substring(0, 7);
       try {
-        const response = await calendarApi.fetchDayoffs(month);
-        console.log(response);
-        if (response.Error) {
-          throw Error(response.Error);
+        if (datesArr.length === 1) {
+          // If interval contains one date
+          const day = datesArr[0];
+          const month = day.substring(0, 7);
+          const response = await calendarApi.fetchDayoffs(month);
+          console.log(response);
+          if (response.Error) {
+            throw Error(response.Error);
+          }
+          commit("DAY_OFFS", response["dates"]);
+        } else {
+          // If interval contains a couple of dates
+          for (let i = 0; i < datesArr.length; i++) {
+            const day = datesArr[i];
+            const month = day.substring(0, 7);
+            const response = await calendarApi.fetchDayoffs(month);
+            console.log(response);
+            if (response.Error) {
+              throw Error(response.Error);
+            }
+            commit("DAY_OFFS", response["dates"]);
+          }
         }
-        commit("DAY_OFFS", response["dates"]);
       } catch (err) {
         console.log(err);
       } finally {
