@@ -1,6 +1,9 @@
 <?php
 // HTTP-headers 
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: access");
+header("Access-Control-Allow-Methods: GET");
+header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
 
 // DB connection and object including
@@ -13,6 +16,8 @@ $db = $database->getConnection();
 
 // Object init
 $calendar = new Calendar($db);
+
+$calendar->month = isset($_GET['month']) ? $_GET['month'] : die();
  
 // Closed dates request
 $stmt = $calendar->read();
@@ -35,6 +40,7 @@ if ($num>0) {
             "date_id" => $date_id,
             "date" => $date,
             "date_title" => html_entity_decode($date_title),
+            "month" => $month,
         );
 
         array_push($dates_arr["dates"], $date_item);
