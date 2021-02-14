@@ -1,5 +1,7 @@
 <template>
   <v-app>
+    <Loader></Loader>
+
     <DialogDay></DialogDay>
 
     <v-system-bar color="black" app></v-system-bar>
@@ -16,6 +18,7 @@
 </template>
 
 <script>
+import Loader from "./components/loader/Loader";
 import NavBar from "./components/nav/NavBar";
 import NavDrawer from "./components/nav/NavDrawer";
 import Footer from "./components/footer/Footer";
@@ -26,6 +29,7 @@ export default {
   methods: {},
   mounted() {},
   components: {
+    Loader,
     NavBar,
     NavDrawer,
     Footer,

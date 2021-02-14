@@ -35,7 +35,8 @@ const calendarStore = {
       console.log(state.isDayDialogShow);
       commit("SHOW_DIALOG", false);
     },
-    async fetchDayoffs({ state, commit }, datesArr) {
+    async fetchDayoffs({ state, commit, dispatch }, datesArr) {
+      dispatch("toggleLoader", true, { root: true });
       // Clean dayOffs state
       state.dayOffs = [];
       //      const month = date.substring(0, 7);
@@ -66,7 +67,7 @@ const calendarStore = {
       } catch (err) {
         console.log(err);
       } finally {
-        console.log("finally");
+        dispatch("toggleLoader", false, { root: true });
       }
     },
     async createDayoff({ dispatch, commit }, date) {
