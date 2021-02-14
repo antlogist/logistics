@@ -45,7 +45,6 @@ const calendarStore = {
           const day = datesArr[0];
           const month = day.substring(0, 7);
           const response = await calendarApi.fetchDayoffs(month);
-          console.log(response);
           if (response.Error) {
             throw Error(response.Error);
           }
@@ -56,7 +55,6 @@ const calendarStore = {
             const day = datesArr[i];
             const month = day.substring(0, 7);
             const response = await calendarApi.fetchDayoffs(month);
-            console.log(response);
             if (response.Error) {
               throw Error(response.Error);
             }
@@ -69,17 +67,19 @@ const calendarStore = {
         dispatch("toggleLoader", false, { root: true });
       }
     },
-    async createDayoff({ dispatch, commit }, date) {
-      console.log(dispatch, commit, date);
-      const response = await calendarApi.createDayoff(date);
-      console.log(response);
-      //      try {
-      //
-      //      } catch(err) {
-      //        console.log(err);
-      //      } finally {
-      //
-      //      }
+    async createDayoff({ state, dispatch }, date) {
+      dispatch("toggleLoader", true, { root: true });
+      try {
+        const response = await calendarApi.createDayoff(date);
+        if (response.Error) {
+          throw Error(response.Error);
+        }
+        dispatch("fetchDayoffs", [state.currentDate], { root: false });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        dispatch("toggleLoader", false, { root: true });
+      }
     }
   }
 };

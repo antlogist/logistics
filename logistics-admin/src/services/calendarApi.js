@@ -9,9 +9,9 @@ class Calendar {
   async createDayoff(date) {
     console.log(date);
     const data = {
-      date: "2021-04-11",
-      date_title: "HB",
-      month: "2021-04"
+      date: date,
+      date_title: "Day-off",
+      month: date.substring(0, 7)
     };
     const response = await axios.post(`/create.php`, JSON.stringify(data));
     return response;
