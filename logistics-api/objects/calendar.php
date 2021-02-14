@@ -66,5 +66,27 @@ class Calendar {
 
         return false;
     }
+  
+    function delete(){
+
+        // Delete query
+        $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
+
+        // Query preparation  
+        $stmt = $this->conn->prepare($query);
+
+        // Sanitization 
+        $this->date_id=htmlspecialchars(strip_tags($this->date_id));
+
+        // Bind date id for the deletion 
+        $stmt->bindParam(1, $this->date_id);
+
+        // Request execution
+        if ($stmt->execute()) {
+            return true;
+        }
+
+        return false;
+    }
 }
 ?>

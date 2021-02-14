@@ -12,6 +12,7 @@ include_once '../config/database.php';
 // Calendar object included
 include_once '../objects/calendar.php';
 
+// Get DB connection
 $database = new Database();
 $db = $database->getConnection();
 
