@@ -116,12 +116,6 @@
             </div>
           </template>
         </template>
-        <template v-slot:day="{ past }">
-          <template v-if="past">
-            <v-row class="fill-height" style="background-color: #f7f7f7">
-            </v-row>
-          </template>
-        </template>
       </v-calendar>
     </v-sheet>
   </v-container>
