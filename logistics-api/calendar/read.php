@@ -8,6 +8,8 @@ header("Content-Type: application/json; charset=UTF-8");
 
 // DB connection and object including
 include_once '../config/database.php';
+
+// Calendar object included
 include_once '../objects/calendar.php';
 
 // Get DB connection

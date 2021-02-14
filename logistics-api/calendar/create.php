@@ -9,12 +9,13 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 // get DB connection
 include_once '../config/database.php';
 
-// Closed object included
+// Calendar object included
 include_once '../objects/calendar.php';
 
 $database = new Database();
 $db = $database->getConnection();
 
+// Object init
 $calendar = new Calendar($db);
  
 // Get sended data
@@ -23,12 +24,14 @@ $data = json_decode(file_get_contents("php://input"));
 // If data is not empty
 if (
     !empty($data->date) &&
+    !empty($data->month) &&
     !empty($data->date_title)
 ) {
 
     // set calendar properties
     $calendar->date = $data->date;
     $calendar->date_title = $data->date_title;
+    $calendar->month = $data->month;
 
     // Record creation
     if($calendar->create()) {
