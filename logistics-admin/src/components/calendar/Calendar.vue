@@ -156,8 +156,6 @@ export default {
     const now = Date.now();
     const today = new Date(now);
     this.focus = today.toISOString().substring(0, 10);
-    // Fetch dayoffs on mounted
-    this.fetchDayoffs([today]);
   },
   computed: {
     ...mapGetters("calendar", ["dayOffs"])

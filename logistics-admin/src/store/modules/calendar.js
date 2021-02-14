@@ -39,7 +39,6 @@ const calendarStore = {
       dispatch("toggleLoader", true, { root: true });
       // Clean dayOffs state
       state.dayOffs = [];
-      //      const month = date.substring(0, 7);
       try {
         if (datesArr.length === 1) {
           // If interval contains one date
@@ -72,6 +71,8 @@ const calendarStore = {
     },
     async createDayoff({ dispatch, commit }, date) {
       console.log(dispatch, commit, date);
+      const response = await calendarApi.createDayoff(date);
+      console.log(response);
       //      try {
       //
       //      } catch(err) {
