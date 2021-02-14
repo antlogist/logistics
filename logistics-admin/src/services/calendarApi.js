@@ -7,10 +7,14 @@ class Calendar {
     return response;
   }
   async createDayoff(date) {
-    //    console.log(month);
-    //    const response = await axios.get(`/read.php?month=${date}`);
     console.log(date);
-    //    return response;
+    const data = {
+      date: "2021-04-11",
+      date_title: "HB",
+      month: "2021-04"
+    };
+    const response = await axios.post(`/create.php`, JSON.stringify(data));
+    return response;
   }
 }
 
