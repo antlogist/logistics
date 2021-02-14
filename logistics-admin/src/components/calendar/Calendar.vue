@@ -12,7 +12,6 @@
         style="max-width: 320px;"
         color="#9fc51c"
       ></v-select>
-      <h5>{{ dayOffs }}</h5>
     </v-toolbar>
     <v-toolbar class="mb-3" flat>
       <v-btn fab x-small color="#9fc51c" @click="prev">
@@ -37,6 +36,7 @@
         color="#9fc51c"
         v-model="focus"
         :type="type"
+        :events="orders"
         @click:date="openDialog"
         @change="fetchEvents"
       >
@@ -158,12 +158,13 @@ export default {
     this.focus = today.toISOString().substring(0, 10);
   },
   computed: {
-    ...mapGetters("calendar", ["dayOffs"])
+    ...mapGetters("calendar", ["dayOffs", "orders"])
   },
   methods: {
-    ...mapActions("calendar", ["openDayDialog", "fetchDayoffs"]),
+    ...mapActions("calendar", ["openDayDialog", "fetchDayoffs", "fetchOrders"]),
     // On Interval changing
     fetchEvents({ start, end }) {
+      this.fetchOrders({ startDate: start.date, endDate: end.date });
       const monthOne = start.date.substring(0, 7);
       const monthTwo = end.date.substring(0, 7);
       if (monthOne === monthTwo) {

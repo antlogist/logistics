@@ -3,7 +3,7 @@ import axios from "@/plugins/axios/";
 class Calendar {
   async fetchDayoffs(month) {
     //    console.log(month);
-    const response = await axios.get(`/read.php?month=${month}`);
+    const response = await axios.get(`/calendar/read.php?month=${month}`);
     return response;
   }
   async createDayoff(date) {
@@ -14,7 +14,10 @@ class Calendar {
       date_title: "Day-off",
       month: date.substring(0, 7)
     };
-    const response = await axios.post(`/create.php`, JSON.stringify(data));
+    const response = await axios.post(
+      `/calendar/create.php`,
+      JSON.stringify(data)
+    );
     return response;
   }
   async deleteDayoff(id) {
@@ -22,7 +25,17 @@ class Calendar {
     const data = {
       date_id: id
     };
-    const response = await axios.post(`/delete.php`, JSON.stringify(data));
+    const response = await axios.post(
+      `/calendar/delete.php`,
+      JSON.stringify(data)
+    );
+    return response;
+  }
+  async fetchOrders(startDate, endDate) {
+    console.log(startDate, endDate);
+    const response = await axios.get(
+      `/bookings/read.php?start_date=${startDate}&&end_date=${endDate}`
+    );
     return response;
   }
 }

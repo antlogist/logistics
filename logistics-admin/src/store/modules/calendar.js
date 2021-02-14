@@ -1,7 +1,22 @@
 import calendarApi from "@/services/calendarApi";
 import mutations from "@/store/mutations";
 
-const { SHOW_DIALOG, DAY_OFFS } = mutations;
+function serializeOrders(orders) {
+  return orders.reduce((acc, order) => {
+    let { name, date } = order;
+    return [
+      ...acc,
+      {
+        name: name,
+        start: date,
+        end: date,
+        timed: 0
+      }
+    ];
+  }, []);
+}
+
+const { SHOW_DIALOG, DAY_OFFS, ORDERS } = mutations;
 
 const calendarStore = {
   namespaced: true,
@@ -9,13 +24,15 @@ const calendarStore = {
     isDayDialogShow: false,
     currentDate: "",
     currentDateId: "",
-    dayOffs: []
+    dayOffs: [],
+    orders: []
   },
   getters: {
     isDayDialogShow: ({ isDayDialogShow }) => isDayDialogShow,
     currentDate: ({ currentDate }) => currentDate,
     currentDateId: ({ currentDateId }) => currentDateId,
-    dayOffs: ({ dayOffs }) => dayOffs
+    dayOffs: ({ dayOffs }) => dayOffs,
+    orders: ({ orders }) => orders
   },
   mutations: {
     [SHOW_DIALOG](state, bool) {
@@ -25,6 +42,9 @@ const calendarStore = {
       arr.map(({ date }) => {
         state.dayOffs.push(date);
       });
+    },
+    [ORDERS](state, orders) {
+      state.orders = orders;
     }
   },
   actions: {
@@ -91,6 +111,22 @@ const calendarStore = {
           throw Error(response.Error);
         }
         dispatch("fetchDayoffs", [state.currentDate], { root: false });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        dispatch("toggleLoader", false, { root: true });
+      }
+    },
+    async fetchOrders({ state, commit, dispatch }, { startDate, endDate }) {
+      dispatch("toggleLoader", true, { root: true });
+      state.orders = [];
+      try {
+        const response = await calendarApi.fetchOrders(startDate, endDate);
+        if (response.Error) {
+          throw Error(response.Error);
+        }
+        const orders = serializeOrders(response["orders"]);
+        commit("ORDERS", orders);
       } catch (err) {
         console.log(err);
       } finally {

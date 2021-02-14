@@ -10,13 +10,6 @@
               color="red darken-3"
               label="Day off"
             ></v-switch>
-            {{ dayOff }}
-            <br />
-            <br />
-            {{ dayOffs }} {{ currentDate }} {{ currentDateId }}
-            <br />
-            <br />
-            <v-btn @click="createDayoff(currentDate)">Create</v-btn>
             Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione
             nam fugiat repellat. In ratione ad veniam nihil deleniti velit
             possimus delectus, assumenda ea animi minus repellendus deserunt
