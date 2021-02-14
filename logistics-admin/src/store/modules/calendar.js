@@ -8,11 +8,13 @@ const calendarStore = {
   state: {
     isDayDialogShow: false,
     currentDate: "",
+    currentDateId: "",
     dayOffs: []
   },
   getters: {
     isDayDialogShow: ({ isDayDialogShow }) => isDayDialogShow,
     currentDate: ({ currentDate }) => currentDate,
+    currentDateId: ({ currentDateId }) => currentDateId,
     dayOffs: ({ dayOffs }) => dayOffs
   },
   mutations: {
@@ -71,6 +73,20 @@ const calendarStore = {
       dispatch("toggleLoader", true, { root: true });
       try {
         const response = await calendarApi.createDayoff(date);
+        if (response.Error) {
+          throw Error(response.Error);
+        }
+        dispatch("fetchDayoffs", [state.currentDate], { root: false });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        dispatch("toggleLoader", false, { root: true });
+      }
+    },
+    async deleteDayoff({ state, dispatch }, id) {
+      dispatch("toggleLoader", true, { root: true });
+      try {
+        const response = await calendarApi.deleteDayoff(id);
         if (response.Error) {
           throw Error(response.Error);
         }

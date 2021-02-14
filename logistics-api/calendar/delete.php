@@ -23,7 +23,7 @@ $calendar = new Calendar($db);
 $data = json_decode(file_get_contents("php://input"));
 
 // Set date id
-$calendar->date_id = $calendar->date_id;
+$calendar->date_id = $data->date_id;
 
 // Date deletion
 if ($calendar->delete()) {

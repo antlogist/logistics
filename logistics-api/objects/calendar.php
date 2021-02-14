@@ -45,7 +45,7 @@ class Calendar {
         $query = "INSERT INTO
                     " . $this->table_name . "
                 SET
-                    date=:date, date_title=:date_title, month=:month";
+                    date_id=:date_id, date=:date, date_title=:date_title, month=:month";
 
         // Query preparation 
         $stmt = $this->conn->prepare($query);
@@ -55,6 +55,7 @@ class Calendar {
         $this->date_title=htmlspecialchars(strip_tags($this->date_title));
 
         // Parameters binding
+        $stmt->bindParam(":date_id", $this->date_id);
         $stmt->bindParam(":date", $this->date);
         $stmt->bindParam(":date_title", $this->date_title);
         $stmt->bindParam(":month", $this->month);
@@ -70,7 +71,7 @@ class Calendar {
     function delete(){
 
         // Delete query
-        $query = "DELETE FROM " . $this->table_name . " WHERE id = ?";
+        $query = "DELETE FROM " . $this->table_name . " WHERE date_id = ?";
 
         // Query preparation  
         $stmt = $this->conn->prepare($query);

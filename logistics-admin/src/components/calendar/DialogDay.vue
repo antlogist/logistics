@@ -13,7 +13,7 @@
             {{ dayOff }}
             <br />
             <br />
-            {{ dayOffs }} {{ currentDate }}
+            {{ dayOffs }} {{ currentDate }} {{ currentDateId }}
             <br />
             <br />
             <v-btn @click="createDayoff(currentDate)">Create</v-btn>
@@ -35,7 +35,12 @@ export default {
   name: "DialogDay",
   data: () => ({}),
   computed: {
-    ...mapGetters("calendar", ["isDayDialogShow", "currentDate", "dayOffs"]),
+    ...mapGetters("calendar", [
+      "isDayDialogShow",
+      "currentDate",
+      "currentDateId",
+      "dayOffs"
+    ]),
     dayOff: {
       get() {
         if (this.dayOffs.includes(this.currentDate)) {
@@ -48,13 +53,13 @@ export default {
         if (bool) {
           this.createDayoff(this.currentDate);
         } else {
-          console.log(bool);
+          this.deleteDayoff(this.currentDate);
         }
       }
     }
   },
   methods: {
-    ...mapActions("calendar", ["createDayoff"])
+    ...mapActions("calendar", ["createDayoff", "deleteDayoff"])
   },
   components: {
     DialogDayToolbar

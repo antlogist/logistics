@@ -24,12 +24,14 @@ $data = json_decode(file_get_contents("php://input"));
  
 // If data is not empty
 if (
+    !empty($data->date_id) &&
     !empty($data->date) &&
     !empty($data->month) &&
     !empty($data->date_title)
 ) {
 
     // set calendar properties
+    $calendar->date_id = $data->date_id;
     $calendar->date = $data->date;
     $calendar->date_title = $data->date_title;
     $calendar->month = $data->month;
