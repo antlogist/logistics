@@ -1,5 +1,5 @@
 <template>
-  <v-dialog v-model="isDayDialogShow" fullscreen persistent>
+  <v-dialog v-model="isDayDialogShow" max-width="500px" persistent>
     <v-card>
       <DialogDayToolbar></DialogDayToolbar>
       <v-container>
@@ -10,10 +10,6 @@
               color="red darken-3"
               label="Day off"
             ></v-switch>
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ratione
-            nam fugiat repellat. In ratione ad veniam nihil deleniti velit
-            possimus delectus, assumenda ea animi minus repellendus deserunt
-            dignissimos qui pariatur!
           </v-col>
         </v-row>
       </v-container>

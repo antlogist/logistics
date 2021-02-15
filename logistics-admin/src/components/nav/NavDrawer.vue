@@ -36,6 +36,11 @@ export default {
         title: "Orders",
         component: "Orders",
         link: "orders"
+      },
+      {
+        title: "Report One",
+        component: "Orders",
+        link: "orders"
       }
     ],
     group: null
