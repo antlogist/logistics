@@ -14,7 +14,14 @@
       ></v-select>
     </v-toolbar>
     <v-toolbar class="mb-3" flat>
-      <v-btn fab x-small color="#9fc51c" @click="prev">
+      <v-btn
+        fab
+        x-small
+        color="#9fc51c"
+        @click="prev"
+        :loading="isShowLoaderTwo"
+        :disabled="isShowLoaderTwo"
+      >
         <v-icon x-small>
           mdi-chevron-left
         </v-icon>
@@ -24,7 +31,14 @@
         {{ $refs.calendar.title }}
       </v-toolbar-title>
       <v-spacer></v-spacer>
-      <v-btn fab x-small color="#9fc51c" @click="next">
+      <v-btn
+        fab
+        x-small
+        color="#9fc51c"
+        @click="next"
+        :loading="isShowLoaderTwo"
+        :disabled="isShowLoaderTwo"
+      >
         <v-icon x-small>
           mdi-chevron-right
         </v-icon>
@@ -34,10 +48,13 @@
       <v-calendar
         ref="calendar"
         color="#9fc51c"
+        event-text-color="black"
         v-model="focus"
         :type="type"
         :events="orders"
+        @click:event="showEvent"
         @click:date="openDialog"
+        @click:more="viewDay"
         @change="fetchEvents"
       >
         <!--Month label template-->
@@ -55,7 +72,7 @@
             <!--If day off and not past-->
             <div>
               <v-btn
-                color="red"
+                color="red lighten-3"
                 fab
                 small
                 elevation="0"
@@ -69,7 +86,7 @@
             <!--If day off and past-->
             <div>
               <v-btn
-                color="red"
+                color="red lighten-3"
                 fab
                 small
                 elevation="0"
@@ -117,6 +134,36 @@
           </template>
         </template>
       </v-calendar>
+      <v-menu
+        v-model="selectedOpen"
+        :close-on-content-click="false"
+        :activator="selectedElement"
+        offset-x
+      >
+        <v-card color="grey lighten-4" min-width="350px" flat>
+          <v-toolbar :color="selectedEvent.color" dark>
+            <v-btn icon>
+              <v-icon>mdi-pencil</v-icon>
+            </v-btn>
+            <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+            <v-spacer></v-spacer>
+            <v-btn icon>
+              <v-icon>mdi-heart</v-icon>
+            </v-btn>
+            <v-btn icon>
+              <v-icon>mdi-dots-vertical</v-icon>
+            </v-btn>
+          </v-toolbar>
+          <v-card-text>
+            <span v-html="selectedEvent.details"></span>
+          </v-card-text>
+          <v-card-actions>
+            <v-btn text color="secondary" @click="selectedOpen = false">
+              Cancel
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-menu>
     </v-sheet>
   </v-container>
 </template>
@@ -149,7 +196,10 @@ export default {
       }
     ],
     focus: "",
-    events: []
+    events: [],
+    selectedEvent: {},
+    selectedElement: null,
+    selectedOpen: false
   }),
   mounted() {
     // Set today
@@ -158,10 +208,33 @@ export default {
     this.focus = today.toISOString().substring(0, 10);
   },
   computed: {
-    ...mapGetters("calendar", ["dayOffs", "orders"])
+    ...mapGetters("calendar", ["dayOffs", "orders"]),
+    ...mapGetters(["isShowLoaderTwo"])
   },
   methods: {
     ...mapActions("calendar", ["openDayDialog", "fetchDayoffs", "fetchOrders"]),
+    viewDay({ date }) {
+      this.focus = date;
+      this.type = "day";
+    },
+    showEvent({ nativeEvent, event }) {
+      const open = () => {
+        this.selectedEvent = event;
+        this.selectedElement = nativeEvent.target;
+        setTimeout(() => {
+          this.selectedOpen = true;
+        }, 10);
+      };
+
+      if (this.selectedOpen) {
+        this.selectedOpen = false;
+        setTimeout(open, 10);
+      } else {
+        open();
+      }
+
+      nativeEvent.stopPropagation();
+    },
     // On Interval changing
     fetchEvents({ start, end }) {
       this.fetchOrders({ startDate: start.date, endDate: end.date });

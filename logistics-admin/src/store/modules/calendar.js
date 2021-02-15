@@ -3,14 +3,21 @@ import mutations from "@/store/mutations";
 
 function serializeOrders(orders) {
   return orders.reduce((acc, order) => {
-    let { name, date } = order;
+    let { id, name, date, timeslot, address, email, phone, status } = order;
     return [
       ...acc,
       {
+        id: id,
         name: name,
         start: date,
         end: date,
-        timed: 0
+        color: "#9fc51c",
+        timed: 0,
+        timeslot: timeslot,
+        address: address,
+        email: email,
+        phone: phone,
+        status: status
       }
     ];
   }, []);
@@ -118,7 +125,7 @@ const calendarStore = {
       }
     },
     async fetchOrders({ state, commit, dispatch }, { startDate, endDate }) {
-      dispatch("toggleLoader", true, { root: true });
+      dispatch("toggleLoaderTwo", true, { root: true });
       state.orders = [];
       try {
         const response = await calendarApi.fetchOrders(startDate, endDate);
@@ -130,7 +137,7 @@ const calendarStore = {
       } catch (err) {
         console.log(err);
       } finally {
-        dispatch("toggleLoader", false, { root: true });
+        dispatch("toggleLoaderTwo", false, { root: true });
       }
     }
   }
