@@ -141,27 +141,94 @@
         offset-x
       >
         <v-card color="grey lighten-4" min-width="350px" flat>
-          <v-toolbar :color="selectedEvent.color" dark>
-            <v-btn icon>
-              <v-icon>mdi-pencil</v-icon>
-            </v-btn>
+          <v-toolbar :color="selectedEvent.color" light>
             <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
             <v-spacer></v-spacer>
-            <v-btn icon>
-              <v-icon>mdi-heart</v-icon>
-            </v-btn>
-            <v-btn icon>
-              <v-icon>mdi-dots-vertical</v-icon>
+            <v-btn icon small class="mr-1">
+              <v-icon small @click="selectedOpen = false">mdi-close</v-icon>
             </v-btn>
           </v-toolbar>
-          <v-card-text>
-            <span v-html="selectedEvent.details"></span>
-          </v-card-text>
-          <v-card-actions>
-            <v-btn text color="secondary" @click="selectedOpen = false">
-              Cancel
-            </v-btn>
-          </v-card-actions>
+
+          <v-list two-line>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon color="#9fc51c">
+                  mdi-clock
+                </v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{
+                  selectedEvent.timeslot
+                }}</v-list-item-title>
+                <v-list-item-subtitle>Timeslot</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-divider inset></v-divider>
+
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon color="#9fc51c">
+                  mdi-check-circle
+                </v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{
+                  selectedEvent.status
+                }}</v-list-item-title>
+                <v-list-item-subtitle>Status</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-divider inset></v-divider>
+
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon color="#9fc51c">
+                  mdi-phone
+                </v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ selectedEvent.phone }}</v-list-item-title>
+                <v-list-item-subtitle>Phone</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-divider inset></v-divider>
+
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon color="#9fc51c">
+                  mdi-email
+                </v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{ selectedEvent.email }}</v-list-item-title>
+                <v-list-item-subtitle>Email</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-divider inset></v-divider>
+
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon color="#9fc51c">
+                  mdi-map-marker
+                </v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{
+                  selectedEvent.address
+                }}</v-list-item-title>
+                <v-list-item-subtitle>Address</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+          </v-list>
         </v-card>
       </v-menu>
     </v-sheet>

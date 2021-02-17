@@ -9,6 +9,6 @@
 
 <script>
 export default {
-  name: "Orders"
+  name: "Map"
 };
 </script>

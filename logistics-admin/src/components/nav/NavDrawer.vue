@@ -1,18 +1,33 @@
 <template>
   <v-navigation-drawer
     v-model="drawerVal"
-    bottom
     temporary
     app
     @click:outside="toggleDrawer(false)"
   >
+    <v-list-item>
+      <v-list-item-content>
+        <img
+          style="max-width: 110px; margin: 0 auto;"
+          src="https://wildgarliccatering.com/images/logo-colour.png"
+          alt=""
+        />
+      </v-list-item-content>
+    </v-list-item>
+
+    <v-divider></v-divider>
+
     <v-list nav dense>
-      <v-list-item-group v-model="group" active-class="lime">
+      <v-list-item-group v-model="group">
         <v-list-item
           v-for="(item, index) in navItems"
           :key="index"
           :to="item.link"
         >
+          <v-list-item-icon>
+            <v-icon>{{ item.icon }}</v-icon>
+          </v-list-item-icon>
+
           <nav-item :item="item"></nav-item>
         </v-list-item>
       </v-list-item-group>
@@ -30,12 +45,26 @@ export default {
       {
         title: "Calendar",
         component: "Calendar",
-        link: "calendar"
+        link: "calendar",
+        icon: "mdi-calendar"
       },
       {
         title: "Orders",
         component: "Orders",
-        link: "orders"
+        link: "orders",
+        icon: "mdi-view-list"
+      },
+      {
+        title: "Report",
+        component: "Report",
+        link: "report",
+        icon: "mdi-book-open-page-variant"
+      },
+      {
+        title: "Map",
+        component: "Map",
+        link: "map",
+        icon: "mdi-map-marker"
       }
     ],
     group: null
