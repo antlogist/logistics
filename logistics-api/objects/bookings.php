@@ -15,6 +15,7 @@ class Bookings {
     public $date;
     public $timeslot;
     public $status;
+    public $order_id;
     public $start_date;
     public $end_date;
 
@@ -28,7 +29,7 @@ class Bookings {
 
         // Select all of the records
         $query = "SELECT
-                    id, name, phone, email, address, date, timeslot, status
+                    id, name, phone, email, address, date, timeslot, status, orderId
                 FROM
                     " . $this->table_name . "
                 WHERE

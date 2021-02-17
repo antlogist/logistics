@@ -48,9 +48,10 @@ if ($num>0) {
           "phone" => html_entity_decode($phone),
           "email" => html_entity_decode($email),
           "address" => html_entity_decode($address),
-          "date" => $date,
-          "timeslot" => $timeslot,
-          "status" => $status,
+          "date" => html_entity_decode($date),
+          "timeslot" => html_entity_decode($timeslot),
+          "status" => html_entity_decode($status),
+          "order_id" => html_entity_decode($order_id),
         );
 
         array_push($orders_arr["orders"], $order_item);
