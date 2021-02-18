@@ -3,7 +3,17 @@ import mutations from "@/store/mutations";
 
 function serializeOrders(orders) {
   return orders.reduce((acc, order) => {
-    let { id, name, date, timeslot, address, email, phone, status } = order;
+    let {
+      id,
+      name,
+      date,
+      timeslot,
+      address,
+      email,
+      phone,
+      status,
+      orderId
+    } = order;
     return [
       ...acc,
       {
@@ -17,7 +27,8 @@ function serializeOrders(orders) {
         address: address,
         email: email,
         phone: phone,
-        status: status
+        status: status,
+        orderId: orderId
       }
     ];
   }, []);

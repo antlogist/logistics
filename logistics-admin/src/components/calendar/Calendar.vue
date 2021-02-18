@@ -134,13 +134,8 @@
           </template>
         </template>
       </v-calendar>
-      <v-menu
-        v-model="selectedOpen"
-        :close-on-content-click="false"
-        :activator="selectedElement"
-        offset-x
-      >
-        <v-card color="grey lighten-4" min-width="350px" flat>
+      <v-menu v-model="selectedOpen" left :activator="selectedElement">
+        <v-card color="grey lighten-4" flat>
           <v-toolbar :color="selectedEvent.color" light>
             <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
             <v-spacer></v-spacer>
@@ -148,8 +143,24 @@
               <v-icon small @click="selectedOpen = false">mdi-close</v-icon>
             </v-btn>
           </v-toolbar>
-
           <v-list two-line>
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon color="#9fc51c">
+                  mdi-folder
+                </v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{
+                  selectedEvent.orderId
+                }}</v-list-item-title>
+                <v-list-item-subtitle>Order ID</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-divider inset></v-divider>
+
             <v-list-item>
               <v-list-item-icon>
                 <v-icon color="#9fc51c">
@@ -222,9 +233,7 @@
               </v-list-item-icon>
 
               <v-list-item-content>
-                <v-list-item-title>{{
-                  selectedEvent.address
-                }}</v-list-item-title>
+                {{ selectedEvent.address }}
                 <v-list-item-subtitle>Address</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
