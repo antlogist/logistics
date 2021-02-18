@@ -15,7 +15,6 @@ class Bookings {
     public $date;
     public $timeslot;
     public $status;
-    public $order_id;
     public $start_date;
     public $end_date;
 
