@@ -36,7 +36,7 @@ function serializeOrders(orders) {
   }, []);
 }
 
-const { SHOW_DIALOG, DAY_OFFS, ORDERS } = mutations;
+const { SHOW_DIALOG, DAY_OFFS, ORDERS, ORDERS_INFO } = mutations;
 
 const calendarStore = {
   namespaced: true,
@@ -45,14 +45,16 @@ const calendarStore = {
     currentDate: "",
     currentDateId: "",
     dayOffs: [],
-    orders: []
+    orders: [],
+    ordersInfo: []
   },
   getters: {
     isDayDialogShow: ({ isDayDialogShow }) => isDayDialogShow,
     currentDate: ({ currentDate }) => currentDate,
     currentDateId: ({ currentDateId }) => currentDateId,
     dayOffs: ({ dayOffs }) => dayOffs,
-    orders: ({ orders }) => orders
+    orders: ({ orders }) => orders,
+    ordersInfo: ({ ordersInfo }) => ordersInfo
   },
   mutations: {
     [SHOW_DIALOG](state, bool) {
@@ -65,6 +67,9 @@ const calendarStore = {
     },
     [ORDERS](state, orders) {
       state.orders = orders;
+    },
+    [ORDERS_INFO](state, { order_token, payment_status }) {
+      state.ordersInfo.push({ order_token, payment_status });
     }
   },
   actions: {
@@ -147,6 +152,30 @@ const calendarStore = {
         }
         const orders = serializeOrders(response["orders"]);
         commit("ORDERS", orders);
+      } catch (err) {
+        console.log(err);
+      } finally {
+        dispatch("toggleLoaderTwo", false, { root: true });
+        dispatch("fetchOrdersInfo", "", { root: false });
+      }
+    },
+    async fetchOrdersInfo({ state, commit, dispatch }) {
+      dispatch("toggleLoaderTwo", true, { root: true });
+      try {
+        state.ordersInfo = [];
+        const orders = state.orders;
+        for (let i = 0; i < orders.length; i++) {
+          const token = orders[i]["orderToken"];
+          const response = token
+            ? await calendarApi.fetchOrdersInfo(token)
+            : "";
+          if (response.Error) {
+            throw Error(response.Error);
+          }
+          if (token) {
+            commit("ORDERS_INFO", response);
+          }
+        }
       } catch (err) {
         console.log(err);
       } finally {

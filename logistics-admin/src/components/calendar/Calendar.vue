@@ -12,6 +12,8 @@
         style="max-width: 320px;"
         color="#9fc51c"
       ></v-select>
+      <v-btn @click="fetchOrdersInfo">Orders Info</v-btn>
+      {{ ordersInfo }}
     </v-toolbar>
     <v-toolbar class="mb-3" flat>
       <v-btn
@@ -285,11 +287,16 @@ export default {
     this.focus = today.toISOString().substring(0, 10);
   },
   computed: {
-    ...mapGetters("calendar", ["dayOffs", "orders"]),
+    ...mapGetters("calendar", ["dayOffs", "orders", "ordersInfo"]),
     ...mapGetters(["isShowLoaderTwo"])
   },
   methods: {
-    ...mapActions("calendar", ["openDayDialog", "fetchDayoffs", "fetchOrders"]),
+    ...mapActions("calendar", [
+      "openDayDialog",
+      "fetchDayoffs",
+      "fetchOrders",
+      "fetchOrdersInfo"
+    ]),
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";
