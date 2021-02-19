@@ -22,7 +22,7 @@ function serializeOrders(orders) {
         name: name,
         start: date,
         end: date,
-        color: "#9fc51c",
+        color: "#ffffff",
         timed: 0,
         timeslot: timeslot,
         address: address,

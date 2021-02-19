@@ -1,6 +1,5 @@
 <template>
   <v-container class="mb-5">
-    {{ paymentFilterValue }}
     <v-row class="child-flex">
       <div>
         <v-toolbar flat class="my-3 d-flex justify-center">
