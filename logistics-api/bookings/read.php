@@ -51,7 +51,8 @@ if ($num>0) {
           "date" => html_entity_decode($date),
           "timeslot" => html_entity_decode($timeslot),
           "status" => html_entity_decode($status),
-          "orderId" => html_entity_decode($orderId),
+          "orderId" => html_entity_decode($order_id),
+          "orderToken" => html_entity_decode($order_token),
         );
 
         array_push($orders_arr["orders"], $order_item);

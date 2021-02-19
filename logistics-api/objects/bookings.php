@@ -28,7 +28,7 @@ class Bookings {
 
         // Select all of the records
         $query = "SELECT
-                    id, name, phone, email, address, date, timeslot, status, orderId
+                    id, name, phone, email, address, date, timeslot, status, order_id, order_token
                 FROM
                     " . $this->table_name . "
                 WHERE

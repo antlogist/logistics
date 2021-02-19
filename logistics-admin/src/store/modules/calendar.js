@@ -12,7 +12,8 @@ function serializeOrders(orders) {
       email,
       phone,
       status,
-      orderId
+      orderId,
+      orderToken
     } = order;
     return [
       ...acc,
@@ -28,7 +29,8 @@ function serializeOrders(orders) {
         email: email,
         phone: phone,
         status: status,
-        orderId: orderId
+        orderId: orderId,
+        orderToken: orderToken
       }
     ];
   }, []);
