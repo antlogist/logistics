@@ -143,6 +143,7 @@
               <v-icon small @click="selectedOpen = false">mdi-close</v-icon>
             </v-btn>
           </v-toolbar>
+          {{ selectedEvent.orderToken }}
           <v-list two-line>
             <v-list-item>
               <v-list-item-icon>
