@@ -53,7 +53,8 @@ const calendarStore = {
     currentDateId: "",
     dayOffs: [],
     orders: [],
-    ordersInfo: []
+    ordersInfo: [],
+    paymentFilterValue: "all"
   },
   getters: {
     isDayDialogShow: ({ isDayDialogShow }) => isDayDialogShow,
@@ -61,7 +62,8 @@ const calendarStore = {
     currentDateId: ({ currentDateId }) => currentDateId,
     dayOffs: ({ dayOffs }) => dayOffs,
     orders: ({ orders }) => orders,
-    ordersInfo: ({ ordersInfo }) => ordersInfo
+    ordersInfo: ({ ordersInfo }) => ordersInfo,
+    paymentFilterValue: ({ paymentFilterValue }) => paymentFilterValue
   },
   mutations: {
     [SHOW_DIALOG](state, bool) {
@@ -202,6 +204,27 @@ const calendarStore = {
       } finally {
         dispatch("toggleLoaderTwo", false, { root: true });
         commit("PAYMENT_STATUS");
+        dispatch("setPaymentFilterColor", "", { root: false });
+      }
+    },
+    setPaymentFilter({ state, dispatch }, { value }) {
+      state.paymentFilterValue = value;
+      dispatch("setPaymentFilterColor", "", { root: false });
+    },
+    setPaymentFilterColor({ state }) {
+      const filterName = state.paymentFilterValue;
+      if (filterName === "all") {
+        state.orders.map((item, i) => {
+          state.orders[i].color = "#9fc51c";
+        });
+      } else {
+        state.orders.map((item, i) => {
+          if (state.orders[i].paymentStatus === filterName) {
+            state.orders[i].color = "#9fc51c";
+          } else {
+            state.orders[i].color = "#ffffff";
+          }
+        });
       }
     }
   }

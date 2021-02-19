@@ -1,37 +1,53 @@
 <template>
   <v-container class="mb-5">
-    <v-toolbar flat class="mb-0">
-      <v-select
-        v-model="type"
-        :items="types"
-        dense
-        outlined
-        hide-details
-        class="ma-2"
-        label="type"
-        style="max-width: 320px;"
-        color="#9fc51c"
-      ></v-select>
-    </v-toolbar>
-    <v-toolbar flat class="mb-0">
-      <v-btn-toggle v-model="paymentStatus" color="#9fc51c">
-        <v-btn small value="all">
-          <span>All</span>
-        </v-btn>
+    {{ paymentFilterValue }}
+    <v-row class="child-flex">
+      <div>
+        <v-toolbar flat class="my-3 d-flex justify-center">
+          <v-select
+            v-model="type"
+            :items="types"
+            dense
+            outlined
+            hide-details
+            class="ma-2"
+            label="type"
+            style="max-width: 320px;"
+            color="#9fc51c"
+          ></v-select>
+        </v-toolbar>
+      </div>
 
-        <v-btn small value="pending">
-          <span>Pending</span>
-        </v-btn>
+      <div>
+        <v-toolbar flat class="my-3">
+          <v-btn-toggle
+            dense
+            class="justify-center"
+            style="width: 100%;"
+            v-model="setFilter"
+            mandatory
+            active-class="filter-btn-active"
+          >
+            <v-btn small value="all">
+              <span>All</span>
+            </v-btn>
 
-        <v-btn small value="paid">
-          <span>Paid</span>
-        </v-btn>
+            <v-btn small value="pending">
+              <span>Pending</span>
+            </v-btn>
 
-        <v-btn small value="undefined">
-          <span>Undef.</span>
-        </v-btn>
-      </v-btn-toggle>
-    </v-toolbar>
+            <v-btn small value="paid">
+              <span>Paid</span>
+            </v-btn>
+
+            <v-btn small value="undefined">
+              <span>Undefined</span>
+            </v-btn>
+          </v-btn-toggle>
+        </v-toolbar>
+      </div>
+    </v-row>
+
     <v-toolbar class="mb-3" flat>
       <v-btn
         fab
@@ -130,7 +146,7 @@
             <!--If day off and not past-->
             <div>
               <v-btn
-                color="red"
+                color="red lighten-3"
                 fab
                 elevation="0"
                 @click="openDialog({ date })"
@@ -143,7 +159,7 @@
             <!--If day off and past-->
             <div>
               <v-btn
-                color="red"
+                color="red lighten-3"
                 fab
                 elevation="0"
                 @click="openDialog({ date })"
@@ -311,8 +327,7 @@ export default {
     events: [],
     selectedEvent: {},
     selectedElement: null,
-    selectedOpen: false,
-    paymentStatus: "all"
+    selectedOpen: false
   }),
   mounted() {
     // Set today
@@ -321,15 +336,29 @@ export default {
     this.focus = today.toISOString().substring(0, 10);
   },
   computed: {
-    ...mapGetters("calendar", ["dayOffs", "orders", "ordersInfo"]),
-    ...mapGetters(["isShowLoaderTwo"])
+    ...mapGetters("calendar", [
+      "dayOffs",
+      "orders",
+      "ordersInfo",
+      "paymentFilterValue"
+    ]),
+    ...mapGetters(["isShowLoaderTwo"]),
+    setFilter: {
+      get() {
+        return this.paymentFilterValue;
+      },
+      set(filter) {
+        this.setPaymentFilter({ value: filter });
+      }
+    }
   },
   methods: {
     ...mapActions("calendar", [
       "openDayDialog",
       "fetchDayoffs",
       "fetchOrders",
-      "fetchOrdersInfo"
+      "fetchOrdersInfo",
+      "setPaymentFilter"
     ]),
     viewDay({ date }) {
       this.focus = date;
@@ -385,3 +414,9 @@ export default {
   components: {}
 };
 </script>
+
+<style>
+.filter-btn-active {
+  background-color: #9fc51c !important;
+}
+</style>
