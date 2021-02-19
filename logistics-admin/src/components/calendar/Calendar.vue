@@ -12,8 +12,25 @@
         style="max-width: 320px;"
         color="#9fc51c"
       ></v-select>
-      <v-btn @click="fetchOrdersInfo">Orders Info</v-btn>
-      {{ ordersInfo }}
+    </v-toolbar>
+    <v-toolbar flat class="mb-0">
+      <v-btn-toggle v-model="paymentStatus" color="#9fc51c">
+        <v-btn small value="all">
+          <span>All</span>
+        </v-btn>
+
+        <v-btn small value="pending">
+          <span>Pending</span>
+        </v-btn>
+
+        <v-btn small value="paid">
+          <span>Paid</span>
+        </v-btn>
+
+        <v-btn small value="undefined">
+          <span>Undef.</span>
+        </v-btn>
+      </v-btn-toggle>
     </v-toolbar>
     <v-toolbar class="mb-3" flat>
       <v-btn
@@ -145,7 +162,6 @@
               <v-icon small @click="selectedOpen = false">mdi-close</v-icon>
             </v-btn>
           </v-toolbar>
-          {{ selectedEvent.orderToken }}
           <v-list two-line>
             <v-list-item>
               <v-list-item-icon>
@@ -159,6 +175,23 @@
                   selectedEvent.orderId
                 }}</v-list-item-title>
                 <v-list-item-subtitle>Order ID</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-divider inset></v-divider>
+
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon color="#9fc51c">
+                  mdi-cash-multiple
+                </v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{
+                  selectedEvent.paymentStatus
+                }}</v-list-item-title>
+                <v-list-item-subtitle>Payment Status</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
@@ -278,7 +311,8 @@ export default {
     events: [],
     selectedEvent: {},
     selectedElement: null,
-    selectedOpen: false
+    selectedOpen: false,
+    paymentStatus: "all"
   }),
   mounted() {
     // Set today

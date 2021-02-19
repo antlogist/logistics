@@ -30,13 +30,20 @@ function serializeOrders(orders) {
         phone: phone,
         status: status,
         orderId: orderId,
-        orderToken: orderToken
+        orderToken: orderToken,
+        paymentStatus: ""
       }
     ];
   }, []);
 }
 
-const { SHOW_DIALOG, DAY_OFFS, ORDERS, ORDERS_INFO } = mutations;
+const {
+  SHOW_DIALOG,
+  DAY_OFFS,
+  ORDERS,
+  ORDERS_INFO,
+  PAYMENT_STATUS
+} = mutations;
 
 const calendarStore = {
   namespaced: true,
@@ -70,6 +77,20 @@ const calendarStore = {
     },
     [ORDERS_INFO](state, { order_token, payment_status }) {
       state.ordersInfo.push({ order_token, payment_status });
+    },
+    [PAYMENT_STATUS](state) {
+      const ordersInfo = state.ordersInfo;
+      state.orders.map((order, i) => {
+        for (let k = 0; k < ordersInfo.length; k++) {
+          if (state.ordersInfo[k].order_token === order.orderToken) {
+            state.orders[i].paymentStatus = state.ordersInfo[k].payment_status;
+            break;
+          }
+        }
+        if (state.orders[i].paymentStatus === "") {
+          state.orders[i].paymentStatus = "undefined";
+        }
+      });
     }
   },
   actions: {
@@ -180,6 +201,7 @@ const calendarStore = {
         console.log(err);
       } finally {
         dispatch("toggleLoaderTwo", false, { root: true });
+        commit("PAYMENT_STATUS");
       }
     }
   }
