@@ -173,7 +173,7 @@
       </v-calendar>
       <v-menu v-model="selectedOpen" left :activator="selectedElement">
         <v-card color="grey lighten-4" flat>
-          <v-toolbar :color="selectedEvent.color" light>
+          <v-toolbar color="#9fc51c" light>
             <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon small class="mr-1">
@@ -209,7 +209,7 @@
                 <v-list-item-title>{{
                   selectedEvent.paymentStatus
                 }}</v-list-item-title>
-                <v-list-item-subtitle>Payment Status</v-list-item-subtitle>
+                <v-list-item-subtitle>Payment status</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
@@ -326,7 +326,6 @@ export default {
       }
     ],
     focus: "",
-    events: [],
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false

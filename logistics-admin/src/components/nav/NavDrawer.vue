@@ -49,9 +49,9 @@ export default {
         icon: "mdi-calendar"
       },
       {
-        title: "Orders",
-        component: "Orders",
-        link: "orders",
+        title: "Bookings",
+        component: "Bookings",
+        link: "bookings",
         icon: "mdi-view-list"
       },
       {

@@ -1,7 +1,7 @@
 import Vue from "vue";
 import Router from "vue-router";
 import Calendar from "@/components/calendar/Calendar";
-import Orders from "@/components/orders/Orders";
+import Bookings from "@/components/bookings/Bookings";
 import Report from "@/components/report/Report";
 import Map from "@/components/map/Map";
 
@@ -22,9 +22,9 @@ export function createRouter() {
         component: Calendar
       },
       {
-        path: "/orders",
-        name: "Orders",
-        component: Orders
+        path: "/bookings",
+        name: "Bookings",
+        component: Bookings
       },
       {
         path: "/report",
