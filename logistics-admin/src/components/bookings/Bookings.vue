@@ -1,38 +1,96 @@
 <template>
-  <v-container>
-    <h1>{{ orders }}</h1>
-    <v-row>
-      <v-col cols="12" sm="6" md="4">
-        <v-dialog
-          ref="dialog"
-          v-model="modalMonth"
-          :return-value.sync="month"
-          persistent
-          width="290px"
-        >
-          <template v-slot:activator="{ on, attrs }">
-            <v-text-field
-              v-model="month"
-              label="Picker in dialog"
-              prepend-icon="mdi-calendar"
-              readonly
-              v-bind="attrs"
-              v-on="on"
-            ></v-text-field>
-          </template>
-          <v-date-picker type="month" v-model="month" scrollable>
-            <v-spacer></v-spacer>
-            <v-btn text color="primary" @click="modalMonth = false">
-              Cancel
+  <v-container class="mb-5">
+    <v-row class="child-flex mb-3">
+      <div>
+        <v-toolbar flat class="my-3 d-flex justify-center">
+          <v-dialog
+            ref="dialog"
+            v-model="modalMonth"
+            :return-value.sync="month"
+            persistent
+            width="290px"
+          >
+            <template v-slot:activator="{ on, attrs }">
+              <v-text-field
+                outlined
+                dense
+                hide-details
+                v-model="month"
+                color="#9fc51c"
+                label="Select month"
+                prepend-icon="mdi-calendar"
+                readonly
+                v-bind="attrs"
+                v-on="on"
+              ></v-text-field>
+            </template>
+            <v-date-picker type="month" v-model="month" color="#7f9e15">
+              <v-spacer></v-spacer>
+              <v-btn
+                class="white--text"
+                color="#7f9e15"
+                small
+                @click="modalMonth = false"
+              >
+                Cancel
+              </v-btn>
+              <v-btn
+                class="white--text"
+                color="#7f9e15"
+                small
+                @click="
+                  fetchEvents(month);
+                  modalMonth = false;
+                  $refs.dialog.save(month);
+                "
+              >
+                OK
+              </v-btn>
+            </v-date-picker>
+          </v-dialog>
+        </v-toolbar>
+      </div>
+
+      <div>
+        <v-toolbar flat class="my-3">
+          <v-btn-toggle
+            class="justify-center"
+            style="width: 100%;"
+            v-model="search"
+            mandatory
+            active-class="filter-btn-active"
+          >
+            <v-btn
+              small
+              value="paid"
+              :loading="isShowLoaderTwo"
+              :disabled="isShowLoaderTwo"
+            >
+              <span>Paid</span>
             </v-btn>
-            <v-btn text color="primary" @click="modalMonth = false">
-              OK
+
+            <v-btn
+              small
+              value="unpaid"
+              :loading="isShowLoaderTwo"
+              :disabled="isShowLoaderTwo"
+            >
+              <span>Unpaid</span>
             </v-btn>
-          </v-date-picker>
-        </v-dialog>
-      </v-col>
+          </v-btn-toggle>
+        </v-toolbar>
+      </div>
     </v-row>
-    <v-data-table :headers="headers" class="elevation-1"></v-data-table>
+
+    <v-data-table
+      :items-per-page="-1"
+      :headers="headers"
+      :search="search"
+      :items="orders"
+      class="elevation-1"
+      :custom-filter="filterPaymentStatus"
+    >
+    </v-data-table>
   </v-container>
 </template>
 
@@ -41,36 +99,56 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Bookings",
   data: () => ({
+    search: "paid",
     modalMonth: false,
     month: "",
     headers: [
       {
         text: "ID",
-        align: "start",
-        sortable: false,
+        align: "center",
+        sortable: true,
         value: "orderId"
       },
       {
         text: "Delivery date",
-        align: "start",
-        sortable: false,
-        value: "date"
+        align: "center",
+        sortable: true,
+        value: "start"
       },
       {
         text: "Timeslot",
-        align: "start",
+        align: "center",
         sortable: false,
         value: "timeslot"
       },
       {
-        text: "Payment status",
-        align: "start",
+        text: "Name",
+        align: "center",
+        sortable: true,
+        value: "name"
+      },
+      {
+        text: "Address",
+        align: "center",
+        sortable: true,
+        value: "address"
+      },
+      {
+        text: "Phone",
+        align: "center",
         sortable: false,
+        value: "phone"
+      },
+      {
+        text: "Payment status",
+        align: "center",
+        sortable: true,
+        filterable: true,
         value: "paymentStatus"
       },
       {
         text: "Delivery status",
-        align: "start",
+        align: "center",
         sortable: false,
         value: "status"
       }
@@ -123,6 +201,14 @@ export default {
         startDate: startDate,
         endDate: endYear + "-" + endMonth + "-" + endDay
       });
+    },
+    filterPaymentStatus(value, search) {
+      return (
+        value != null &&
+        search != null &&
+        typeof value === "string" &&
+        value.toString() === search
+      );
     }
   }
 };

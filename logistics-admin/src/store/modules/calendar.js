@@ -29,7 +29,7 @@ function serializeOrders(orders) {
         address: address,
         email: email,
         phone: phone,
-        status: status,
+        status: status ? status : "pending",
         orderId: orderId,
         orderToken: orderToken,
         paymentStatus: ""
@@ -231,6 +231,7 @@ const calendarStore = {
             state.orders[i].color = "#9fc51c";
             state.orders[i].nameColor = "#000000";
           } else {
+            state.orders[i].paymentStatus = "unpaid";
             state.orders[i].color = "transparent";
             state.orders[i].nameColor = "gray";
           }
