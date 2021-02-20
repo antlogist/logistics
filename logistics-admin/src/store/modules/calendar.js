@@ -22,7 +22,8 @@ function serializeOrders(orders) {
         name: name,
         start: date,
         end: date,
-        color: "#ffffff",
+        color: "transparent",
+        nameColor: "transparent",
         timed: 0,
         timeslot: timeslot,
         address: address,
@@ -54,7 +55,7 @@ const calendarStore = {
     dayOffs: [],
     orders: [],
     ordersInfo: [],
-    paymentFilterValue: "all"
+    paymentFilterValue: "paid"
   },
   getters: {
     isDayDialogShow: ({ isDayDialogShow }) => isDayDialogShow,
@@ -213,16 +214,25 @@ const calendarStore = {
     },
     setPaymentFilterColor({ state }) {
       const filterName = state.paymentFilterValue;
-      if (filterName === "all") {
+
+      if (filterName !== "paid") {
         state.orders.map((item, i) => {
-          state.orders[i].color = "#9fc51c";
+          if (state.orders[i].paymentStatus !== "paid") {
+            state.orders[i].color = "#9fc51c";
+            state.orders[i].nameColor = "#000000";
+          } else {
+            state.orders[i].color = "transparent";
+            state.orders[i].nameColor = "gray";
+          }
         });
       } else {
         state.orders.map((item, i) => {
-          if (state.orders[i].paymentStatus === filterName) {
+          if (state.orders[i].paymentStatus === "paid") {
             state.orders[i].color = "#9fc51c";
+            state.orders[i].nameColor = "#000000";
           } else {
-            state.orders[i].color = "#ffffff";
+            state.orders[i].color = "transparent";
+            state.orders[i].nameColor = "gray";
           }
         });
       }

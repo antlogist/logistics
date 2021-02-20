@@ -34,8 +34,8 @@ class Calendar {
   async fetchOrders(startDate, endDate) {
     console.log(startDate, endDate);
     const response = await axios.get(
-      `/bookings/read.php?start_date=${startDate}&&end_date=${endDate}&&session_id=${sessionId}`
-      //      `/bookings/read.php?start_date=${startDate}&&end_date=${endDate}`
+      //      `/bookings/read.php?start_date=${startDate}&&end_date=${endDate}&&session_id=${sessionId}`
+      `/bookings/read.php?start_date=${startDate}&&end_date=${endDate}`
     );
     return response;
   }

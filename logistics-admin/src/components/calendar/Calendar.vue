@@ -20,27 +20,28 @@
       <div>
         <v-toolbar flat class="my-3">
           <v-btn-toggle
-            dense
             class="justify-center"
             style="width: 100%;"
             v-model="setFilter"
             mandatory
             active-class="filter-btn-active"
           >
-            <v-btn small value="all">
-              <span>All</span>
-            </v-btn>
-
-            <v-btn small value="pending">
-              <span>Pending</span>
-            </v-btn>
-
-            <v-btn small value="paid">
+            <v-btn
+              small
+              value="paid"
+              :loading="isShowLoaderTwo"
+              :disabled="isShowLoaderTwo"
+            >
               <span>Paid</span>
             </v-btn>
 
-            <v-btn small value="undefined">
-              <span>Undefined</span>
+            <v-btn
+              small
+              value="unpaid"
+              :loading="isShowLoaderTwo"
+              :disabled="isShowLoaderTwo"
+            >
+              <span>Unpaid</span>
             </v-btn>
           </v-btn-toggle>
         </v-toolbar>
@@ -81,8 +82,6 @@
     <v-sheet height="600">
       <v-calendar
         ref="calendar"
-        color="#9fc51c"
-        event-text-color="black"
         v-model="focus"
         :type="type"
         :events="orders"
@@ -166,6 +165,10 @@
               >
             </div>
           </template>
+        </template>
+
+        <template v-slot:event="{ event }">
+          <div :style="{ color: event.nameColor }">{{ event.name }}</div>
         </template>
       </v-calendar>
       <v-menu v-model="selectedOpen" left :activator="selectedElement">
