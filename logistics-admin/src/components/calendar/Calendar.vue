@@ -1,18 +1,53 @@
 <template>
   <v-container class="mb-5">
-    <v-toolbar flat class="mb-0">
-      <v-select
-        v-model="type"
-        :items="types"
-        dense
-        outlined
-        hide-details
-        class="ma-2"
-        label="type"
-        style="max-width: 320px;"
-        color="#9fc51c"
-      ></v-select>
-    </v-toolbar>
+    <v-row class="child-flex">
+      <div>
+        <v-toolbar flat class="my-3 d-flex justify-center">
+          <v-select
+            v-model="type"
+            :items="types"
+            dense
+            outlined
+            hide-details
+            class="ma-2"
+            label="type"
+            style="max-width: 320px;"
+            color="#9fc51c"
+          ></v-select>
+        </v-toolbar>
+      </div>
+
+      <div>
+        <v-toolbar flat class="my-3">
+          <v-btn-toggle
+            class="justify-center"
+            style="width: 100%;"
+            v-model="setFilter"
+            mandatory
+            active-class="filter-btn-active"
+          >
+            <v-btn
+              small
+              value="paid"
+              :loading="isShowLoaderTwo"
+              :disabled="isShowLoaderTwo"
+            >
+              <span>Paid</span>
+            </v-btn>
+
+            <v-btn
+              small
+              value="unpaid"
+              :loading="isShowLoaderTwo"
+              :disabled="isShowLoaderTwo"
+            >
+              <span>Unpaid</span>
+            </v-btn>
+          </v-btn-toggle>
+        </v-toolbar>
+      </div>
+    </v-row>
+
     <v-toolbar class="mb-3" flat>
       <v-btn
         fab
@@ -47,8 +82,6 @@
     <v-sheet height="600">
       <v-calendar
         ref="calendar"
-        color="#9fc51c"
-        event-text-color="black"
         v-model="focus"
         :type="type"
         :events="orders"
@@ -111,7 +144,7 @@
             <!--If day off and not past-->
             <div>
               <v-btn
-                color="red"
+                color="red lighten-3"
                 fab
                 elevation="0"
                 @click="openDialog({ date })"
@@ -124,7 +157,7 @@
             <!--If day off and past-->
             <div>
               <v-btn
-                color="red"
+                color="red lighten-3"
                 fab
                 elevation="0"
                 @click="openDialog({ date })"
@@ -133,17 +166,20 @@
             </div>
           </template>
         </template>
+
+        <template v-slot:event="{ event }">
+          <div :style="{ color: event.nameColor }">{{ event.name }}</div>
+        </template>
       </v-calendar>
       <v-menu v-model="selectedOpen" left :activator="selectedElement">
         <v-card color="grey lighten-4" flat>
-          <v-toolbar :color="selectedEvent.color" light>
+          <v-toolbar color="#9fc51c" light>
             <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
             <v-spacer></v-spacer>
             <v-btn icon small class="mr-1">
               <v-icon small @click="selectedOpen = false">mdi-close</v-icon>
             </v-btn>
           </v-toolbar>
-          {{ selectedEvent.orderToken }}
           <v-list two-line>
             <v-list-item>
               <v-list-item-icon>
@@ -157,6 +193,23 @@
                   selectedEvent.orderId
                 }}</v-list-item-title>
                 <v-list-item-subtitle>Order ID</v-list-item-subtitle>
+              </v-list-item-content>
+            </v-list-item>
+
+            <v-divider inset></v-divider>
+
+            <v-list-item>
+              <v-list-item-icon>
+                <v-icon color="#9fc51c">
+                  mdi-cash-multiple
+                </v-icon>
+              </v-list-item-icon>
+
+              <v-list-item-content>
+                <v-list-item-title>{{
+                  selectedEvent.paymentStatus
+                }}</v-list-item-title>
+                <v-list-item-subtitle>Payment status</v-list-item-subtitle>
               </v-list-item-content>
             </v-list-item>
 
@@ -273,7 +326,6 @@ export default {
       }
     ],
     focus: "",
-    events: [],
     selectedEvent: {},
     selectedElement: null,
     selectedOpen: false
@@ -285,11 +337,30 @@ export default {
     this.focus = today.toISOString().substring(0, 10);
   },
   computed: {
-    ...mapGetters("calendar", ["dayOffs", "orders"]),
-    ...mapGetters(["isShowLoaderTwo"])
+    ...mapGetters("calendar", [
+      "dayOffs",
+      "orders",
+      "ordersInfo",
+      "paymentFilterValue"
+    ]),
+    ...mapGetters(["isShowLoaderTwo"]),
+    setFilter: {
+      get() {
+        return this.paymentFilterValue;
+      },
+      set(filter) {
+        this.setPaymentFilter({ value: filter });
+      }
+    }
   },
   methods: {
-    ...mapActions("calendar", ["openDayDialog", "fetchDayoffs", "fetchOrders"]),
+    ...mapActions("calendar", [
+      "openDayDialog",
+      "fetchDayoffs",
+      "fetchOrders",
+      "fetchOrdersInfo",
+      "setPaymentFilter"
+    ]),
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";
@@ -344,3 +415,9 @@ export default {
   components: {}
 };
 </script>
+
+<style>
+.filter-btn-active {
+  background-color: #9fc51c !important;
+}
+</style>

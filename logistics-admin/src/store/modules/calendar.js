@@ -22,21 +22,29 @@ function serializeOrders(orders) {
         name: name,
         start: date,
         end: date,
-        color: "#9fc51c",
+        color: "transparent",
+        nameColor: "transparent",
         timed: 0,
         timeslot: timeslot,
         address: address,
         email: email,
         phone: phone,
-        status: status,
+        status: status ? status : "pending",
         orderId: orderId,
-        orderToken: orderToken
+        orderToken: orderToken,
+        paymentStatus: ""
       }
     ];
   }, []);
 }
 
-const { SHOW_DIALOG, DAY_OFFS, ORDERS } = mutations;
+const {
+  SHOW_DIALOG,
+  DAY_OFFS,
+  ORDERS,
+  ORDERS_INFO,
+  PAYMENT_STATUS
+} = mutations;
 
 const calendarStore = {
   namespaced: true,
@@ -45,14 +53,18 @@ const calendarStore = {
     currentDate: "",
     currentDateId: "",
     dayOffs: [],
-    orders: []
+    orders: [],
+    ordersInfo: [],
+    paymentFilterValue: "paid"
   },
   getters: {
     isDayDialogShow: ({ isDayDialogShow }) => isDayDialogShow,
     currentDate: ({ currentDate }) => currentDate,
     currentDateId: ({ currentDateId }) => currentDateId,
     dayOffs: ({ dayOffs }) => dayOffs,
-    orders: ({ orders }) => orders
+    orders: ({ orders }) => orders,
+    ordersInfo: ({ ordersInfo }) => ordersInfo,
+    paymentFilterValue: ({ paymentFilterValue }) => paymentFilterValue
   },
   mutations: {
     [SHOW_DIALOG](state, bool) {
@@ -65,6 +77,23 @@ const calendarStore = {
     },
     [ORDERS](state, orders) {
       state.orders = orders;
+    },
+    [ORDERS_INFO](state, { order_token, payment_status }) {
+      state.ordersInfo.push({ order_token, payment_status });
+    },
+    [PAYMENT_STATUS](state) {
+      const ordersInfo = state.ordersInfo;
+      state.orders.map((order, i) => {
+        for (let k = 0; k < ordersInfo.length; k++) {
+          if (state.ordersInfo[k].order_token === order.orderToken) {
+            state.orders[i].paymentStatus = state.ordersInfo[k].payment_status;
+            break;
+          }
+        }
+        if (state.orders[i].paymentStatus === "") {
+          state.orders[i].paymentStatus = "undefined";
+        }
+      });
     }
   },
   actions: {
@@ -151,6 +180,62 @@ const calendarStore = {
         console.log(err);
       } finally {
         dispatch("toggleLoaderTwo", false, { root: true });
+        dispatch("fetchOrdersInfo", "", { root: false });
+      }
+    },
+    async fetchOrdersInfo({ state, commit, dispatch }) {
+      dispatch("toggleLoaderTwo", true, { root: true });
+      try {
+        state.ordersInfo = [];
+        const orders = state.orders;
+        for (let i = 0; i < orders.length; i++) {
+          const token = orders[i]["orderToken"];
+          const response = token
+            ? await calendarApi.fetchOrdersInfo(token)
+            : "";
+          if (response.Error) {
+            throw Error(response.Error);
+          }
+          if (token) {
+            commit("ORDERS_INFO", response);
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        dispatch("toggleLoaderTwo", false, { root: true });
+        commit("PAYMENT_STATUS");
+        dispatch("setPaymentFilterColor", "", { root: false });
+      }
+    },
+    setPaymentFilter({ state, dispatch }, { value }) {
+      state.paymentFilterValue = value;
+      dispatch("setPaymentFilterColor", "", { root: false });
+    },
+    setPaymentFilterColor({ state }) {
+      const filterName = state.paymentFilterValue;
+
+      if (filterName !== "paid") {
+        state.orders.map((item, i) => {
+          if (state.orders[i].paymentStatus !== "paid") {
+            state.orders[i].color = "#9fc51c";
+            state.orders[i].nameColor = "#000000";
+          } else {
+            state.orders[i].color = "transparent";
+            state.orders[i].nameColor = "gray";
+          }
+        });
+      } else {
+        state.orders.map((item, i) => {
+          if (state.orders[i].paymentStatus === "paid") {
+            state.orders[i].color = "#9fc51c";
+            state.orders[i].nameColor = "#000000";
+          } else {
+            state.orders[i].paymentStatus = "unpaid";
+            state.orders[i].color = "transparent";
+            state.orders[i].nameColor = "gray";
+          }
+        });
       }
     }
   }
