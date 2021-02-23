@@ -35,7 +35,7 @@ class Calendar {
     console.log(startDate, endDate);
     const response = await axios.get(
       `/bookings/read.php?start_date=${startDate}&&end_date=${endDate}&&session_id=${sessionId}`
-      //            `/bookings/read.php?start_date=${startDate}&&end_date=${endDate}`
+      //                  `/bookings/read.php?start_date=${startDate}&&end_date=${endDate}`
     );
     return response;
   }
@@ -46,7 +46,7 @@ class Calendar {
   async updateOrderStatus(id, status) {
     const response = await axios.post(
       `/bookings/update.php?id=${id}&&status=${status}&&session_id=${sessionId}`
-      //      `/bookings/update.php?id=${id}&&status=${status}`
+      //            `/bookings/update.php?id=${id}&&status=${status}`
     );
     return response;
   }

@@ -88,22 +88,40 @@
       :search="search"
       :items="orders"
       class="elevation-1"
-      :custom-filter="filterPaymentStatus"
       sort-by="orderId"
     >
-      <template v-slot:item.actions="{ item }">
-        <v-btn
-          :loading="isShowLoaderTwo"
-          :disabled="isShowLoaderTwo"
-          x-small
-          fab
-          :style="{
-            background: item.status === 'done' ? '#7f9e15' : 'lightgray'
-          }"
-          @click="updateStatus(item.id, item.status)"
-        >
-          <v-icon x-small>mdi-check</v-icon>
-        </v-btn>
+      <!--      :custom-filter="filterPaymentStatus"-->
+      <template v-slot:body="{ items }">
+        <tbody>
+          <tr
+            v-for="(item, index) in items"
+            :key="index"
+            :class="{ active: item.paymentStatus === search }"
+          >
+            <td>{{ item.orderId }}</td>
+            <td>{{ item.start }}</td>
+            <td>{{ item.timeslot }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.address }}</td>
+            <td>{{ item.phone }}</td>
+            <td>{{ item.paymentStatus }}</td>
+            <td>{{ item.status }}</td>
+            <td>
+              <v-btn
+                :loading="isShowLoaderTwo"
+                :disabled="isShowLoaderTwo"
+                x-small
+                fab
+                :style="{
+                  background: item.status === 'done' ? '#7f9e15' : 'lightgray'
+                }"
+                @click="updateStatus(item.id, item.status)"
+              >
+                <v-icon x-small>mdi-check</v-icon>
+              </v-btn>
+            </td>
+          </tr>
+        </tbody>
       </template>
     </v-data-table>
   </v-container>
@@ -247,3 +265,17 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+tr.active {
+  background-color: #d1e68c !important;
+  td {
+    color: #000;
+  }
+}
+tr {
+  td {
+    color: gray;
+  }
+}
+</style>
