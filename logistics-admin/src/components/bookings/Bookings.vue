@@ -89,7 +89,22 @@
       :items="orders"
       class="elevation-1"
       :custom-filter="filterPaymentStatus"
+      sort-by="orderId"
     >
+      <template v-slot:item.actions="{ item }">
+        <v-btn
+          :loading="isShowLoaderTwo"
+          :disabled="isShowLoaderTwo"
+          x-small
+          fab
+          :style="{
+            background: item.status === 'done' ? '#7f9e15' : 'lightgray'
+          }"
+          @click="updateStatus(item.id, item.status)"
+        >
+          <v-icon x-small>mdi-check</v-icon>
+        </v-btn>
+      </template>
     </v-data-table>
   </v-container>
 </template>
@@ -107,35 +122,38 @@ export default {
         text: "ID",
         align: "center",
         sortable: true,
-        value: "orderId"
+        value: "orderId",
+        width: "100px"
       },
       {
         text: "Delivery date",
-        align: "center",
+        align: "start",
         sortable: true,
-        value: "start"
+        value: "start",
+        width: "125px"
       },
       {
         text: "Timeslot",
-        align: "center",
+        align: "start",
         sortable: false,
         value: "timeslot"
       },
       {
         text: "Name",
-        align: "center",
+        align: "start",
         sortable: true,
-        value: "name"
+        value: "name",
+        width: "100px"
       },
       {
         text: "Address",
-        align: "center",
+        align: "start",
         sortable: true,
         value: "address"
       },
       {
         text: "Phone",
-        align: "center",
+        align: "start",
         sortable: false,
         value: "phone"
       },
@@ -144,13 +162,21 @@ export default {
         align: "center",
         sortable: true,
         filterable: true,
-        value: "paymentStatus"
+        value: "paymentStatus",
+        width: "150px"
       },
       {
         text: "Delivery status",
         align: "center",
         sortable: false,
-        value: "status"
+        value: "status",
+        width: "150px"
+      },
+      {
+        text: "Actions",
+        align: "center",
+        sortable: false,
+        value: "actions"
       }
     ]
   }),
@@ -186,7 +212,8 @@ export default {
       "fetchDayoffs",
       "fetchOrders",
       "fetchOrdersInfo",
-      "setPaymentFilter"
+      "setPaymentFilter",
+      "updateOrderStatus"
     ]),
     // On Interval changing
     fetchEvents(month) {
@@ -209,6 +236,13 @@ export default {
         typeof value === "string" &&
         value.toString() === search
       );
+    },
+    updateStatus(id, status) {
+      status = status === "pending" ? "done" : "";
+      this.updateOrderStatus({
+        id: id,
+        status: status
+      });
     }
   }
 };

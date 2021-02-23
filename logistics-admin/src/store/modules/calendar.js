@@ -32,7 +32,9 @@ function serializeOrders(orders) {
         status: status ? status : "pending",
         orderId: orderId,
         orderToken: orderToken,
-        paymentStatus: ""
+        paymentStatus: "",
+        startDate: "",
+        endDate: ""
       }
     ];
   }, []);
@@ -169,6 +171,8 @@ const calendarStore = {
     async fetchOrders({ state, commit, dispatch }, { startDate, endDate }) {
       dispatch("toggleLoaderTwo", true, { root: true });
       state.orders = [];
+      state.startDate = startDate;
+      state.endDate = endDate;
       try {
         const response = await calendarApi.fetchOrders(startDate, endDate);
         if (response.Error) {
@@ -236,6 +240,29 @@ const calendarStore = {
             state.orders[i].nameColor = "gray";
           }
         });
+      }
+    },
+    async updateOrderStatus({ state, dispatch }, { id, status }) {
+      dispatch("toggleLoaderTwo", true, { root: true });
+      try {
+        const response = await calendarApi.updateOrderStatus(id, status);
+        if (response.Error) {
+          throw Error(response.Error);
+        }
+        //        console.log(state.orders);
+        const arr = state.orders;
+
+        for (let i = 0; i < arr.length; i++) {
+          if (arr[i].id === id) {
+            state.orders[i]["status"] =
+              state.orders[i]["status"] === "pending" ? "done" : "pending";
+            break;
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        dispatch("toggleLoaderTwo", false, { root: true });
       }
     }
   }
