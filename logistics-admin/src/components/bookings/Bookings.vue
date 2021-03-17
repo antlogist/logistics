@@ -62,7 +62,7 @@
           >
             <v-btn
               small
-              value="paid"
+              value="Paid"
               :loading="isShowLoaderTwo"
               :disabled="isShowLoaderTwo"
             >
@@ -71,7 +71,7 @@
 
             <v-btn
               small
-              value="unpaid"
+              value="Unpaid"
               :loading="isShowLoaderTwo"
               :disabled="isShowLoaderTwo"
             >
@@ -85,25 +85,41 @@
     <v-data-table
       :items-per-page="-1"
       :headers="headers"
-      :search="search"
       :items="orders"
       class="elevation-1"
-      :custom-filter="filterPaymentStatus"
       sort-by="orderId"
     >
-      <template v-slot:item.actions="{ item }">
-        <v-btn
-          :loading="isShowLoaderTwo"
-          :disabled="isShowLoaderTwo"
-          x-small
-          fab
-          :style="{
-            background: item.status === 'done' ? '#7f9e15' : 'lightgray'
-          }"
-          @click="updateStatus(item.id, item.status)"
-        >
-          <v-icon x-small>mdi-check</v-icon>
-        </v-btn>
+      <template v-slot:body="{ items }">
+        <tbody>
+          <tr
+            v-for="(item, index) in items"
+            :key="index"
+            :class="{ active: item.paymentStatus === search }"
+          >
+            <td>{{ item.orderId }}</td>
+            <td>{{ item.start }}</td>
+            <td>{{ item.timeslot }}</td>
+            <td>{{ item.name }}</td>
+            <td>{{ item.address }}</td>
+            <td>{{ item.phone }}</td>
+            <td class="text-center">{{ item.paymentStatus }}</td>
+            <td>{{ item.status }}</td>
+            <td>
+              <v-btn
+                :loading="isShowLoaderTwo"
+                :disabled="isShowLoaderTwo"
+                x-small
+                fab
+                :style="{
+                  background: item.status === 'done' ? '#7f9e15' : 'lightgray'
+                }"
+                @click="updateStatus(item.id, item.status)"
+              >
+                <v-icon x-small>mdi-check</v-icon>
+              </v-btn>
+            </td>
+          </tr>
+        </tbody>
       </template>
     </v-data-table>
   </v-container>
@@ -114,7 +130,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Bookings",
   data: () => ({
-    search: "paid",
+    search: "Paid",
     modalMonth: false,
     month: "",
     headers: [
@@ -161,7 +177,6 @@ export default {
         text: "Payment status",
         align: "center",
         sortable: true,
-        filterable: true,
         value: "paymentStatus",
         width: "150px"
       },
@@ -188,31 +203,14 @@ export default {
     this.fetchEvents(this.month);
   },
   computed: {
-    ...mapGetters("calendar", [
-      "dayOffs",
-      "orders",
-      "ordersInfo",
-      "paymentFilterValue"
-    ]),
-    ...mapGetters(["isShowLoaderTwo"]),
-    setFilter: {
-      get() {
-        return this.paymentFilterValue;
-      },
-      set(filter) {
-        this.setPaymentFilter({
-          value: filter
-        });
-      }
-    }
+    ...mapGetters("calendar", ["dayOffs", "orders"]),
+    ...mapGetters(["isShowLoaderTwo"])
   },
   methods: {
     ...mapActions("calendar", [
       "openDayDialog",
       "fetchDayoffs",
       "fetchOrders",
-      "fetchOrdersInfo",
-      "setPaymentFilter",
       "updateOrderStatus"
     ]),
     // On Interval changing
@@ -229,14 +227,6 @@ export default {
         endDate: endYear + "-" + endMonth + "-" + endDay
       });
     },
-    filterPaymentStatus(value, search) {
-      return (
-        value != null &&
-        search != null &&
-        typeof value === "string" &&
-        value.toString() === search
-      );
-    },
     updateStatus(id, status) {
       status = status === "pending" ? "done" : "";
       this.updateOrderStatus({
@@ -247,3 +237,17 @@ export default {
   }
 };
 </script>
+
+<style lang="scss">
+tr.active {
+  background-color: #d1e68c !important;
+  td {
+    color: #000;
+  }
+}
+tr {
+  td {
+    color: gray;
+  }
+}
+</style>

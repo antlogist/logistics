@@ -28,7 +28,7 @@
           >
             <v-btn
               small
-              value="paid"
+              value="Paid"
               :loading="isShowLoaderTwo"
               :disabled="isShowLoaderTwo"
             >
@@ -37,7 +37,7 @@
 
             <v-btn
               small
-              value="unpaid"
+              value="Unpaid"
               :loading="isShowLoaderTwo"
               :disabled="isShowLoaderTwo"
             >
@@ -337,12 +337,7 @@ export default {
     this.focus = today.toISOString().substring(0, 10);
   },
   computed: {
-    ...mapGetters("calendar", [
-      "dayOffs",
-      "orders",
-      "ordersInfo",
-      "paymentFilterValue"
-    ]),
+    ...mapGetters("calendar", ["dayOffs", "orders", "paymentFilterValue"]),
     ...mapGetters(["isShowLoaderTwo"]),
     setFilter: {
       get() {
@@ -358,7 +353,6 @@ export default {
       "openDayDialog",
       "fetchDayoffs",
       "fetchOrders",
-      "fetchOrdersInfo",
       "setPaymentFilter"
     ]),
     viewDay({ date }) {
