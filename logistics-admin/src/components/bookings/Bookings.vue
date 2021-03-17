@@ -62,7 +62,7 @@
           >
             <v-btn
               small
-              value="paid"
+              value="Paid"
               :loading="isShowLoaderTwo"
               :disabled="isShowLoaderTwo"
             >
@@ -71,7 +71,7 @@
 
             <v-btn
               small
-              value="unpaid"
+              value="Unpaid"
               :loading="isShowLoaderTwo"
               :disabled="isShowLoaderTwo"
             >
@@ -85,12 +85,10 @@
     <v-data-table
       :items-per-page="-1"
       :headers="headers"
-      :search="search"
       :items="orders"
       class="elevation-1"
       sort-by="orderId"
     >
-      <!--      :custom-filter="filterPaymentStatus"-->
       <template v-slot:body="{ items }">
         <tbody>
           <tr
@@ -104,7 +102,7 @@
             <td>{{ item.name }}</td>
             <td>{{ item.address }}</td>
             <td>{{ item.phone }}</td>
-            <td>{{ item.paymentStatus }}</td>
+            <td class="text-center">{{ item.paymentStatus }}</td>
             <td>{{ item.status }}</td>
             <td>
               <v-btn
@@ -132,7 +130,7 @@ import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Bookings",
   data: () => ({
-    search: "paid",
+    search: "Paid",
     modalMonth: false,
     month: "",
     headers: [
@@ -179,7 +177,6 @@ export default {
         text: "Payment status",
         align: "center",
         sortable: true,
-        filterable: true,
         value: "paymentStatus",
         width: "150px"
       },
@@ -206,31 +203,14 @@ export default {
     this.fetchEvents(this.month);
   },
   computed: {
-    ...mapGetters("calendar", [
-      "dayOffs",
-      "orders",
-      "ordersInfo",
-      "paymentFilterValue"
-    ]),
-    ...mapGetters(["isShowLoaderTwo"]),
-    setFilter: {
-      get() {
-        return this.paymentFilterValue;
-      },
-      set(filter) {
-        this.setPaymentFilter({
-          value: filter
-        });
-      }
-    }
+    ...mapGetters("calendar", ["dayOffs", "orders"]),
+    ...mapGetters(["isShowLoaderTwo"])
   },
   methods: {
     ...mapActions("calendar", [
       "openDayDialog",
       "fetchDayoffs",
       "fetchOrders",
-      "fetchOrdersInfo",
-      "setPaymentFilter",
       "updateOrderStatus"
     ]),
     // On Interval changing
@@ -246,14 +226,6 @@ export default {
         startDate: startDate,
         endDate: endYear + "-" + endMonth + "-" + endDay
       });
-    },
-    filterPaymentStatus(value, search) {
-      return (
-        value != null &&
-        search != null &&
-        typeof value === "string" &&
-        value.toString() === search
-      );
     },
     updateStatus(id, status) {
       status = status === "pending" ? "done" : "";

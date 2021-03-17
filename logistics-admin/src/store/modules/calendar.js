@@ -58,7 +58,7 @@ const calendarStore = {
     dayOffs: [],
     orders: [],
     ordersInfo: [],
-    paymentFilterValue: "paid"
+    paymentFilterValue: "Paid"
   },
   getters: {
     isDayDialogShow: ({ isDayDialogShow }) => isDayDialogShow,
@@ -187,33 +187,8 @@ const calendarStore = {
       } catch (err) {
         console.log(err);
       } finally {
-        dispatch("toggleLoaderTwo", false, { root: true });
-        //        dispatch("fetchOrdersInfo", "", { root: false });
-      }
-    },
-    async fetchOrdersInfo({ state, commit, dispatch }) {
-      dispatch("toggleLoaderTwo", true, { root: true });
-      try {
-        state.ordersInfo = [];
-        const orders = state.orders;
-        for (let i = 0; i < orders.length; i++) {
-          const token = orders[i]["orderToken"];
-          const response = token
-            ? await calendarApi.fetchOrdersInfo(token)
-            : "";
-          if (response.Error) {
-            throw Error(response.Error);
-          }
-          if (token) {
-            commit("ORDERS_INFO", response);
-          }
-        }
-      } catch (err) {
-        console.log(err);
-      } finally {
-        dispatch("toggleLoaderTwo", false, { root: true });
-        commit("PAYMENT_STATUS");
         dispatch("setPaymentFilterColor", "", { root: false });
+        dispatch("toggleLoaderTwo", false, { root: true });
       }
     },
     setPaymentFilter({ state, dispatch }, { value }) {
@@ -223,9 +198,9 @@ const calendarStore = {
     setPaymentFilterColor({ state }) {
       const filterName = state.paymentFilterValue;
 
-      if (filterName !== "paid") {
+      if (filterName !== "Paid") {
         state.orders.map((item, i) => {
-          if (state.orders[i].paymentStatus !== "paid") {
+          if (state.orders[i].paymentStatus !== "Paid") {
             state.orders[i].color = "#9fc51c";
             state.orders[i].nameColor = "#000000";
           } else {
@@ -235,11 +210,11 @@ const calendarStore = {
         });
       } else {
         state.orders.map((item, i) => {
-          if (state.orders[i].paymentStatus === "paid") {
+          if (state.orders[i].paymentStatus === "Paid") {
             state.orders[i].color = "#9fc51c";
             state.orders[i].nameColor = "#000000";
           } else {
-            state.orders[i].paymentStatus = "unpaid";
+            state.orders[i].paymentStatus = "Unpaid";
             state.orders[i].color = "transparent";
             state.orders[i].nameColor = "gray";
           }
