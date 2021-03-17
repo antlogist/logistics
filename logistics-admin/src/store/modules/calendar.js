@@ -13,7 +13,8 @@ function serializeOrders(orders) {
       phone,
       status,
       orderId,
-      orderToken
+      orderToken,
+      paymentStatus
     } = order;
     return [
       ...acc,
@@ -23,7 +24,7 @@ function serializeOrders(orders) {
         start: date,
         end: date,
         color: "transparent",
-        nameColor: "transparent",
+        nameColor: "gray",
         timed: 0,
         timeslot: timeslot,
         address: address,
@@ -32,7 +33,7 @@ function serializeOrders(orders) {
         status: status ? status : "pending",
         orderId: orderId,
         orderToken: orderToken,
-        paymentStatus: "",
+        paymentStatus: paymentStatus ? paymentStatus : "Unpaid",
         startDate: "",
         endDate: ""
       }
@@ -179,12 +180,15 @@ const calendarStore = {
           throw Error(response.Error);
         }
         const orders = serializeOrders(response["orders"]);
+
+        console.log(orders);
+
         commit("ORDERS", orders);
       } catch (err) {
         console.log(err);
       } finally {
         dispatch("toggleLoaderTwo", false, { root: true });
-        dispatch("fetchOrdersInfo", "", { root: false });
+        //        dispatch("fetchOrdersInfo", "", { root: false });
       }
     },
     async fetchOrdersInfo({ state, commit, dispatch }) {
