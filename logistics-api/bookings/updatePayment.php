@@ -22,10 +22,10 @@ $db = $database->getConnection();
 // Object init
 $bookings = new Bookings($db);
 
-$bookings->id = isset($_GET['id']) ? $_GET['id'] : die();
-$bookings->status = isset($_GET['status']) ? $_GET['status'] : die();
+$bookings->order_token = isset($_GET['order_token']) ? $_GET['order_token'] : die();
+$bookings->payment_status = 'Paid';
 
-if ($bookings->update()) {
+if ($bookings->update_payment_status()) {
   
   // Set answer code - 200 OK 
   http_response_code(200);

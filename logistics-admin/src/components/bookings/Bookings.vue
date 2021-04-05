@@ -1,6 +1,8 @@
 <template>
   <v-container class="mb-5">
+    <!-- Toolbar row -->
     <v-row class="child-flex mb-3">
+      <!-- Month selection -->
       <div>
         <v-toolbar flat class="my-3 d-flex justify-center">
           <v-dialog
@@ -50,11 +52,13 @@
           </v-dialog>
         </v-toolbar>
       </div>
+      <!-- /Month selection -->
 
+      <!-- Payment status -->
       <div>
         <v-toolbar flat class="my-3">
           <v-btn-toggle
-            class="justify-center"
+            class="justify-end mr-1"
             style="width: 100%;"
             v-model="search"
             mandatory
@@ -78,10 +82,28 @@
               <span>Unpaid</span>
             </v-btn>
           </v-btn-toggle>
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                small
+                elevation="1"
+                :loading="isShowLoaderTwo"
+                :disabled="isShowLoaderTwo"
+                @click="getOrderStatuses"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon small>mdi-update</v-icon>
+              </v-btn>
+            </template>
+            <span>Check the payment status</span>
+          </v-tooltip>
         </v-toolbar>
       </div>
+      <!-- /Payment status -->
     </v-row>
 
+    <!-- Table -->
     <v-data-table
       :items-per-page="-1"
       :headers="headers"
@@ -104,7 +126,7 @@
             <td>{{ item.phone }}</td>
             <td class="text-center">{{ item.paymentStatus }}</td>
             <td>{{ item.status }}</td>
-            <td>
+            <td class="text-center">
               <v-btn
                 :loading="isShowLoaderTwo"
                 :disabled="isShowLoaderTwo"
@@ -115,13 +137,14 @@
                 }"
                 @click="updateStatus(item.id, item.status)"
               >
-                <v-icon x-small>mdi-check</v-icon>
+                <v-icon x-small>mdi-truck</v-icon>
               </v-btn>
             </td>
           </tr>
         </tbody>
       </template>
     </v-data-table>
+    <!-- /Table -->
   </v-container>
 </template>
 
@@ -150,9 +173,10 @@ export default {
       },
       {
         text: "Timeslot",
-        align: "start",
+        align: "center",
         sortable: false,
-        value: "timeslot"
+        value: "timeslot",
+        width: "155px"
       },
       {
         text: "Name",
@@ -191,7 +215,8 @@ export default {
         text: "Actions",
         align: "center",
         sortable: false,
-        value: "actions"
+        value: "actions",
+        width: "100px"
       }
     ]
   }),
@@ -211,7 +236,9 @@ export default {
       "openDayDialog",
       "fetchDayoffs",
       "fetchOrders",
-      "updateOrderStatus"
+      "updateOrderStatus",
+      "fetchOrderInfo",
+      "fetchOrdersInfo"
     ]),
     // On Interval changing
     fetchEvents(month) {
@@ -221,7 +248,6 @@ export default {
       const endYear = endDate.getFullYear();
       const endMonth = ("0" + (endDate.getMonth() + 1).toString()).slice(-2);
       const endDay = endDate.getDate();
-      console.log(endYear, endMonth, endDay);
       this.fetchOrders({
         startDate: startDate,
         endDate: endYear + "-" + endMonth + "-" + endDay
@@ -233,6 +259,12 @@ export default {
         id: id,
         status: status
       });
+    },
+    getOrderStatus(orderToken) {
+      this.fetchOrderInfo({ orderToken });
+    },
+    getOrderStatuses() {
+      this.fetchOrdersInfo();
     }
   }
 };
