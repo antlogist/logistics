@@ -32,7 +32,7 @@ function serializeOrders(orders) {
         phone: phone,
         status: status ? status : "pending",
         orderId: orderId,
-        orderToken: orderToken,
+        orderToken: orderToken ? orderToken : null,
         paymentStatus: paymentStatus ? paymentStatus : "Unpaid",
         startDate: "",
         endDate: ""
@@ -41,16 +41,11 @@ function serializeOrders(orders) {
   }, []);
 }
 
-const {
-  SHOW_DIALOG,
-  DAY_OFFS,
-  ORDERS,
-  ORDERS_INFO,
-  PAYMENT_STATUS
-} = mutations;
+const { SHOW_DIALOG, DAY_OFFS, ORDERS, PAYMENT_STATUS } = mutations;
 
 const calendarStore = {
   namespaced: true,
+
   state: {
     isDayDialogShow: false,
     currentDate: "",
@@ -60,6 +55,7 @@ const calendarStore = {
     ordersInfo: [],
     paymentFilterValue: "Paid"
   },
+
   getters: {
     isDayDialogShow: ({ isDayDialogShow }) => isDayDialogShow,
     currentDate: ({ currentDate }) => currentDate,
@@ -69,6 +65,7 @@ const calendarStore = {
     ordersInfo: ({ ordersInfo }) => ordersInfo,
     paymentFilterValue: ({ paymentFilterValue }) => paymentFilterValue
   },
+
   mutations: {
     [SHOW_DIALOG](state, bool) {
       state.isDayDialogShow = bool;
@@ -80,9 +77,6 @@ const calendarStore = {
     },
     [ORDERS](state, orders) {
       state.orders = orders;
-    },
-    [ORDERS_INFO](state, { order_token, payment_status }) {
-      state.ordersInfo.push({ order_token, payment_status });
     },
     [PAYMENT_STATUS](state) {
       const ordersInfo = state.ordersInfo;
@@ -99,14 +93,13 @@ const calendarStore = {
       });
     }
   },
+
   actions: {
     openDayDialog({ commit, state }, data) {
-      console.log(state.isDayDialogShow, data);
       state.currentDate = data.date;
       commit("SHOW_DIALOG", true);
     },
-    closeDayDialog({ commit, state }) {
-      console.log(state.isDayDialogShow);
+    closeDayDialog({ commit }) {
       commit("SHOW_DIALOG", false);
     },
     async fetchDayoffs({ state, commit, dispatch }, datesArr) {
@@ -181,8 +174,6 @@ const calendarStore = {
         }
         const orders = serializeOrders(response["orders"]);
 
-        console.log(orders);
-
         commit("ORDERS", orders);
       } catch (err) {
         console.log(err);
@@ -191,6 +182,72 @@ const calendarStore = {
         dispatch("toggleLoaderTwo", false, { root: true });
       }
     },
+
+    async fetchOrderInfo({ dispatch }, { orderToken }) {
+      dispatch("toggleLoader", true, { root: true });
+      try {
+        const response = orderToken
+          ? await calendarApi.fetchOrdersInfo(orderToken)
+          : "";
+        if (response.Error) {
+          throw Error(response.Error);
+        }
+        if (response.payment_status === "Paid") {
+          dispatch("setPaymentStatus", { orderToken }, { root: false });
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        dispatch("toggleLoader", false, { root: true });
+      }
+    },
+
+    async fetchOrdersInfo({ dispatch, state }) {
+      dispatch("toggleLoaderTwo", true, { root: true });
+
+      for (const item of state.orders) {
+        const orderToken = item.orderToken;
+        if (item.paymentStatus === "Unpaid" && orderToken !== null) {
+          try {
+            const response = await calendarApi.fetchOrdersInfo(item.orderToken);
+            if (response !== null) {
+              if (response.Error) {
+                throw Error(response.Error);
+              }
+              if (response.payment_status === "Paid") {
+                dispatch("setPaymentStatus", { orderToken }, { root: false });
+              }
+            }
+          } catch (err) {
+            console.log(err);
+          }
+        }
+      }
+      dispatch("toggleLoaderTwo", false, { root: true });
+    },
+
+    async setPaymentStatus({ state, dispatch }, { orderToken }) {
+      dispatch("toggleLoader", true, { root: true });
+      try {
+        const response = await calendarApi.updatePaymentStatus(orderToken);
+        if (response.Error) {
+          throw Error(response.Error);
+        }
+
+        state.orders.map((order, index) => {
+          if (order.orderToken === orderToken) {
+            state.orders[index].paymentStatus = "Paid";
+          }
+        });
+
+        dispatch("setPaymentFilterColor", "", { root: false });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        dispatch("toggleLoader", false, { root: true });
+      }
+    },
+
     setPaymentFilter({ state, dispatch }, { value }) {
       state.paymentFilterValue = value;
       dispatch("setPaymentFilterColor", "", { root: false });
@@ -228,7 +285,6 @@ const calendarStore = {
         if (response.Error) {
           throw Error(response.Error);
         }
-        //        console.log(state.orders);
         const arr = state.orders;
 
         for (let i = 0; i < arr.length; i++) {

@@ -7,7 +7,7 @@ header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json; charset=UTF-8");
 
 
-$session_id = isset($_GET['sessionId']) ? $_GET['sessionId'] : die();
+//$session_id = isset($_GET['sessionId']) ? $_GET['sessionId'] : die();
 
 // DB connection and object including
 include_once '../config/database.php';

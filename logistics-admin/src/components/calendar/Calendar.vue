@@ -1,6 +1,8 @@
 <template>
   <v-container class="mb-5">
+    <!-- Toolbar row -->
     <v-row class="child-flex">
+      <!-- Month selection -->
       <div>
         <v-toolbar flat class="my-3 d-flex justify-center">
           <v-select
@@ -16,18 +18,21 @@
           ></v-select>
         </v-toolbar>
       </div>
+      <!-- /Month selection -->
 
+      <!-- Payment status -->
       <div>
         <v-toolbar flat class="my-3">
+          <!-- Sorting by payment status -->
           <v-btn-toggle
-            class="justify-center"
+            class="justify-end mr-1"
             style="width: 100%;"
             v-model="setFilter"
-            mandatory
             active-class="filter-btn-active"
           >
             <v-btn
               small
+              elevation="1"
               value="Paid"
               :loading="isShowLoaderTwo"
               :disabled="isShowLoaderTwo"
@@ -37,6 +42,7 @@
 
             <v-btn
               small
+              elevation="1"
               value="Unpaid"
               :loading="isShowLoaderTwo"
               :disabled="isShowLoaderTwo"
@@ -44,10 +50,33 @@
               <span>Unpaid</span>
             </v-btn>
           </v-btn-toggle>
+          <!-- Sorting by payment status -->
+
+          <!-- Status checking -->
+          <v-tooltip bottom>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                small
+                elevation="1"
+                :loading="isShowLoaderTwo"
+                :disabled="isShowLoaderTwo"
+                @click="getOrderStatuses"
+                v-bind="attrs"
+                v-on="on"
+              >
+                <v-icon small>mdi-update</v-icon>
+              </v-btn>
+            </template>
+            <span>Check the payment status</span>
+          </v-tooltip>
+          <!-- / Status checking -->
         </v-toolbar>
       </div>
+      <!-- /Payment status -->
     </v-row>
+    <!-- /Toolbar row -->
 
+    <!-- Month selection -->
     <v-toolbar class="mb-3" flat>
       <v-btn
         fab
@@ -61,11 +90,15 @@
           mdi-chevron-left
         </v-icon>
       </v-btn>
+
       <v-spacer></v-spacer>
+
       <v-toolbar-title v-if="$refs.calendar">
         {{ $refs.calendar.title }}
       </v-toolbar-title>
+
       <v-spacer></v-spacer>
+
       <v-btn
         fab
         x-small
@@ -79,7 +112,11 @@
         </v-icon>
       </v-btn>
     </v-toolbar>
+    <!-- / Month selection -->
+
+    <!-- Calendar -->
     <v-sheet height="600">
+      <!-- Calendar body -->
       <v-calendar
         ref="calendar"
         v-model="focus"
@@ -90,7 +127,7 @@
         @click:more="viewDay"
         @change="fetchEvents"
       >
-        <!--Month label template-->
+        <!-- Month day-label template-->
         <template v-slot:day-label="{ today, past, day, date }">
           <template v-if="past & !dayOffs.includes(date)">
             <!-- If past and not day off-->
@@ -129,7 +166,9 @@
             </div>
           </template>
         </template>
-        <!--Week and day label template-->
+        <!-- /Month day-label template -->
+
+        <!-- Week and day-label template -->
         <template v-slot:day-label-header="{ today, past, day, date }">
           <template v-if="past & !dayOffs.includes(date)">
             <!-- If past and not day off-->
@@ -166,139 +205,39 @@
             </div>
           </template>
         </template>
+        <!-- / Week and day-label template -->
 
+        <!-- Event name -->
         <template v-slot:event="{ event }">
           <div :style="{ color: event.nameColor }">{{ event.name }}</div>
         </template>
+        <!-- / Event name -->
       </v-calendar>
-      <v-menu v-model="selectedOpen" left :activator="selectedElement">
-        <v-card color="grey lighten-4" flat>
-          <v-toolbar color="#9fc51c" light>
-            <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
-            <v-spacer></v-spacer>
-            <v-btn icon small class="mr-1">
-              <v-icon small @click="selectedOpen = false">mdi-close</v-icon>
-            </v-btn>
-          </v-toolbar>
-          <v-list two-line>
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon color="#9fc51c">
-                  mdi-folder
-                </v-icon>
-              </v-list-item-icon>
+      <!-- /Calendar body -->
 
-              <v-list-item-content>
-                <v-list-item-title>{{
-                  selectedEvent.orderId
-                }}</v-list-item-title>
-                <v-list-item-subtitle>Order ID</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-divider inset></v-divider>
-
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon color="#9fc51c">
-                  mdi-cash-multiple
-                </v-icon>
-              </v-list-item-icon>
-
-              <v-list-item-content>
-                <v-list-item-title>{{
-                  selectedEvent.paymentStatus
-                }}</v-list-item-title>
-                <v-list-item-subtitle>Payment status</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-divider inset></v-divider>
-
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon color="#9fc51c">
-                  mdi-clock
-                </v-icon>
-              </v-list-item-icon>
-
-              <v-list-item-content>
-                <v-list-item-title>{{
-                  selectedEvent.timeslot
-                }}</v-list-item-title>
-                <v-list-item-subtitle>Timeslot</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-divider inset></v-divider>
-
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon color="#9fc51c">
-                  mdi-check-circle
-                </v-icon>
-              </v-list-item-icon>
-
-              <v-list-item-content>
-                <v-list-item-title>{{
-                  selectedEvent.status
-                }}</v-list-item-title>
-                <v-list-item-subtitle>Status</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-divider inset></v-divider>
-
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon color="#9fc51c">
-                  mdi-phone
-                </v-icon>
-              </v-list-item-icon>
-
-              <v-list-item-content>
-                <v-list-item-title>{{ selectedEvent.phone }}</v-list-item-title>
-                <v-list-item-subtitle>Phone</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-divider inset></v-divider>
-
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon color="#9fc51c">
-                  mdi-email
-                </v-icon>
-              </v-list-item-icon>
-
-              <v-list-item-content>
-                <v-list-item-title>{{ selectedEvent.email }}</v-list-item-title>
-                <v-list-item-subtitle>Email</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-
-            <v-divider inset></v-divider>
-
-            <v-list-item>
-              <v-list-item-icon>
-                <v-icon color="#9fc51c">
-                  mdi-map-marker
-                </v-icon>
-              </v-list-item-icon>
-
-              <v-list-item-content>
-                {{ selectedEvent.address }}
-                <v-list-item-subtitle>Address</v-list-item-subtitle>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
-        </v-card>
+      <!-- Event menu -->
+      <v-menu
+        v-model="selectedOpen"
+        left
+        :activator="selectedElement"
+        :close-on-click="false"
+        :close-on-content-click="false"
+      >
+        <EventCard
+          :selectedEvent="selectedEvent"
+          @getStatus="getOrderStatus"
+          @closeEvent="selectedOpen = false"
+        >
+        </EventCard>
       </v-menu>
+      <!-- /Event menu -->
     </v-sheet>
+    <!-- /Calendar -->
   </v-container>
 </template>
 
 <script>
+import EventCard from "@/components/calendar/event/EventCard";
 import { mapGetters, mapActions } from "vuex";
 export default {
   name: "Calendar",
@@ -353,7 +292,9 @@ export default {
       "openDayDialog",
       "fetchDayoffs",
       "fetchOrders",
-      "setPaymentFilter"
+      "setPaymentFilter",
+      "fetchOrderInfo",
+      "fetchOrdersInfo"
     ]),
     viewDay({ date }) {
       this.focus = date;
@@ -399,14 +340,28 @@ export default {
     next() {
       this.$refs.calendar.next();
     },
-    refreshDayOffs() {
-      const date = this.$refs.calendar.lastEnd.date;
-      //      const month = date.substring(0, 7);
-      console.log(date);
-      //      this.fetchDayoffs(month);
+    getOrderStatus(orderToken) {
+      this.fetchOrderInfo({ orderToken });
+    },
+    getOrderStatuses() {
+      this.fetchOrdersInfo();
     }
   },
-  components: {}
+  components: {
+    EventCard
+  }
+  //  watch: {
+  //    orders: function(orders) {
+  //      if (this.selectedEvent.id) {
+  //        const id = this.selectedEvent.id;
+  //        orders.some(event => {
+  //          if (event.id === id) {
+  //            this.selectedEvent = event;
+  //          }
+  //        });
+  //      }
+  //    }
+  //  }
 };
 </script>
 

@@ -22,7 +22,7 @@ import Loader from "./components/loader/Loader";
 import NavBar from "./components/nav/NavBar";
 import NavDrawer from "./components/nav/NavDrawer";
 import Footer from "./components/footer/Footer";
-import DialogDay from "./components/calendar/DialogDay";
+import DialogDay from "./components/calendar/dialog-day/DialogDay";
 export default {
   name: "App",
   data: () => ({}),
