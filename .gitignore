@@ -12,6 +12,12 @@ user-admin/assets
 user-admin/public/img
 user-admin/package-lock.json
 
+view-orders/node_modules
+view-orders/dist
+view-orders/assets
+view-orders/public/img
+view-orders/package-lock.json
+
 # local env files
 .env
 .env.local
