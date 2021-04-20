@@ -1,6 +1,11 @@
 import axios from "@/plugins/axios/";
 
-class Orders {}
+class Orders {
+  async fetchOrdersInfo(token) {
+    const response = await axios.get(`/orders/read.php?order_token=${token}`);
+    return response;
+  }
+}
 
 const ordersApi = new Orders();
 
