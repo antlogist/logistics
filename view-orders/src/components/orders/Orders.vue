@@ -1,29 +1,121 @@
 <template>
-  <v-container>
-    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quasi et id
-    aperiam obcaecati ab magni, doloribus eos eaque aspernatur numquam ducimus
-    rem enim omnis fugiat provident. Officia, magni quasi tempora.
-    <h1>{{ orders }}</h1>
+  <v-container class="my-5" id="ordersContainer">
+    <v-data-table
+      :headers="headers"
+      :items="orders"
+      :items-per-page="15"
+      @current-items="currentItems"
+      :sort-by="['created_at']"
+      :sort-desc="[true]"
+      class="elevation-1"
+    >
+      <template v-slot:item.actions="{ item }">
+        <v-btn
+          x-small
+          class="mr-2"
+          style="background: #9fc51c"
+          @click="pay(item)"
+        >
+          Re-order
+        </v-btn>
+        <v-btn
+          x-small
+          class="mr-2"
+          style="background: #9fc51c"
+          @click="pay(item)"
+        >
+          Pay
+        </v-btn>
+        <v-btn
+          x-small
+          class="mr-2"
+          style="background: #9fc51c"
+          @click="pay(item)"
+        >
+          Cancel
+        </v-btn>
+        <v-btn
+          x-small
+          class="mr-2"
+          style="background: #9fc51c"
+          @click="pay(item)"
+        >
+          Edit
+        </v-btn>
+        <v-btn x-small style="background: #9fc51c" @click="pay(item)">
+          View
+        </v-btn>
+      </template>
+    </v-data-table>
   </v-container>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 export default {
-  data: () => ({}),
+  data: () => ({
+    headers: [
+      {
+        text: "ID",
+        align: "center",
+        value: "id"
+      },
+      {
+        text: "Date",
+        align: "center",
+        value: "created_at"
+      },
+      {
+        text: "Price (£)",
+        align: "start",
+        value: "total_price",
+        sortable: false
+      },
+      {
+        text: "Payment Status",
+        align: "center",
+        value: "payment_status",
+        sortable: false
+      },
+      {
+        text: "Delivery Date",
+        align: "center",
+        sortable: false
+      },
+      {
+        text: "Timeslot",
+        align: "center",
+        sortable: false
+      },
+      {
+        text: "",
+        align: "end",
+        sortable: false,
+        value: "actions"
+      }
+    ]
+  }),
   computed: {
     ...mapGetters("orders", ["orders"])
   },
   methods: {
-    ...mapActions("orders", ["fetchOrders"]),
+    ...mapActions("orders", ["fetchOrders", "fetchDelivery"]),
     getOrders(orders) {
       this.fetchOrders(orders);
+    },
+    pay(item) {
+      console.log(item);
+    },
+    currentItems(orders) {
+      if (orders.length > 0) {
+        this.fetchDelivery(orders);
+      }
     }
   },
   mounted() {
     console.log("mounted"),
       this.getOrders(
-        typeof confirmedOrders === "undefined" ? {} : confirmedOrders
+        typeof confirmedOrders === "undefined" ? {} : confirmedOrders.data
       );
   }
 };
