@@ -3,7 +3,7 @@
     <v-data-table
       :headers="headers"
       :items="orders"
-      :items-per-page="15"
+      :items-per-page="5"
       @current-items="currentItems"
       :sort-by="['created_at']"
       :sort-desc="[true]"
@@ -63,28 +63,30 @@ export default {
       {
         text: "Date",
         align: "center",
-        value: "created_at"
+        value: "createdAt"
       },
       {
         text: "Price (£)",
         align: "start",
-        value: "total_price",
+        value: "totalPrice",
         sortable: false
       },
       {
         text: "Payment Status",
         align: "center",
-        value: "payment_status",
+        value: "paymentStatus",
         sortable: false
       },
       {
         text: "Delivery Date",
         align: "center",
+        value: "deliveryDate",
         sortable: false
       },
       {
         text: "Timeslot",
         align: "center",
+        value: "deliveryTimeslot",
         sortable: false
       },
       {
@@ -113,10 +115,9 @@ export default {
     }
   },
   mounted() {
-    console.log("mounted"),
-      this.getOrders(
-        typeof confirmedOrders === "undefined" ? {} : confirmedOrders.data
-      );
+    this.getOrders(
+      typeof confirmedOrders === "undefined" ? [] : confirmedOrders.data
+    );
   }
 };
 </script>
