@@ -2,6 +2,15 @@ function setParams(config) {
   console.log(config);
   const params = config.params || {};
   config.params = Object.assign(params, {});
+
+  const paymentToken = config.url.includes("payment-token");
+
+  if (paymentToken) {
+    (config.headers["Content-Type"] = "multipart/form-data"),
+      (config.headers["X-Requested-With"] = "XMLHttpRequest"),
+      (config.headers["Access-Control-Allow-Origin"] = "*");
+  }
+
   return config;
 }
 

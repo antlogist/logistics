@@ -10,7 +10,7 @@
       class="elevation-1"
     >
       <template v-slot:item.actions="{ item }">
-        <template>
+        <template v-if="item.status !== 'canceled'">
           <!--If the delivery has already been booked-->
           <v-btn
             v-if="item.deliveryDate"
@@ -39,8 +39,9 @@
           </v-btn>
         </template>
         <v-btn
+          v-if="item.status !== 'canceled'"
           x-small
-          class="mr-2 cancel_order"
+          class="mr-2"
           style="background: #9fc51c"
           :loading="isShowLoader"
           :disabled="isShowLoader"
@@ -49,6 +50,7 @@
           Cancel
         </v-btn>
         <v-btn
+          v-if="item.status !== 'canceled'"
           x-small
           class="mr-2"
           style="background: #9fc51c"

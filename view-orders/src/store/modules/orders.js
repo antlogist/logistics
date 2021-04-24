@@ -69,9 +69,10 @@ const ordersStore = {
       dispatch("toggleLoader", true, { root: true });
       try {
         const response = await ordersApi.makePayment(token);
-        if (response.trim() === "false") {
+        if (response === "false") {
           alert("Something Went Wrong");
         } else {
+          console.log({ response });
           window.location.href = response;
         }
       } catch (err) {
