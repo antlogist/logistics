@@ -10,27 +10,40 @@
       class="elevation-1"
     >
       <template v-slot:item.actions="{ item }">
+        <template>
+          <!--If the delivery has already been booked-->
+          <v-btn
+            v-if="item.deliveryDate"
+            x-small
+            class="mr-2 payment_button"
+            style="background: #9fc51c"
+            :loading="isShowLoader"
+            :disabled="isShowLoader"
+            :order-token="item.orderToken"
+          >
+            Pay
+          </v-btn>
+          <!--If the delivery has not been booked-->
+          <v-btn
+            v-else
+            x-small
+            class="mr-2"
+            style="background: #9fc51c"
+            :loading="isShowLoader"
+            :disabled="isShowLoader"
+            :order-token="item.orderToken"
+            @click="bookDelivery(item)"
+          >
+            Pay
+          </v-btn>
+        </template>
         <v-btn
           x-small
-          class="mr-2"
+          class="mr-2 cancel_order"
           style="background: #9fc51c"
-          @click="pay(item)"
-        >
-          Re-order
-        </v-btn>
-        <v-btn
-          x-small
-          class="mr-2"
-          style="background: #9fc51c"
-          @click="pay(item)"
-        >
-          Pay
-        </v-btn>
-        <v-btn
-          x-small
-          class="mr-2"
-          style="background: #9fc51c"
-          @click="pay(item)"
+          :loading="isShowLoader"
+          :disabled="isShowLoader"
+          :order-token="item.orderToken"
         >
           Cancel
         </v-btn>
@@ -38,11 +51,19 @@
           x-small
           class="mr-2"
           style="background: #9fc51c"
-          @click="pay(item)"
+          :loading="isShowLoader"
+          :disabled="isShowLoader"
+          @click="editOrder(item)"
         >
           Edit
         </v-btn>
-        <v-btn x-small style="background: #9fc51c" @click="pay(item)">
+        <v-btn
+          x-small
+          style="background: #9fc51c"
+          :loading="isShowLoader"
+          :disabled="isShowLoader"
+          @click="view(item)"
+        >
           View
         </v-btn>
       </template>
@@ -74,7 +95,7 @@ export default {
       {
         text: "Payment Status",
         align: "center",
-        value: "paymentStatus",
+        value: "status",
         sortable: false
       },
       {
@@ -98,15 +119,22 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters("orders", ["orders"])
+    ...mapGetters("orders", ["orders"]),
+    ...mapGetters(["isShowLoader"])
   },
   methods: {
     ...mapActions("orders", ["fetchOrders", "fetchDelivery"]),
     getOrders(orders) {
       this.fetchOrders(orders);
     },
-    pay(item) {
-      console.log(item);
+    bookDelivery(item) {
+      window.location.href = `./booking.php?order_token=${item.orderToken}`;
+    },
+    editOrder(item) {
+      window.location.href = `./edit-order.php?order_token=${item.orderToken}`;
+    },
+    view(item) {
+      window.location.href = `./order-details.php?order_token=${item.orderToken}`;
     },
     currentItems(orders) {
       if (orders.length > 0) {
