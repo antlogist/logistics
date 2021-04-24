@@ -15,14 +15,11 @@ class Orders {
   }
 
   async makePayment(token) {
-    const data = {
-      order_token: token
-    };
+    const data = new FormData();
+    data.append("order_token", token);
     try {
-      const response = await axios.post(
-        `/inc/payment-token.php`,
-        JSON.stringify(data)
-      );
+      const response = await axios.post(`../inc/payment-token.php`, data);
+      console.log({ response });
       return response;
     } catch (err) {
       console.log(err);
