@@ -3,9 +3,10 @@ function setParams(config) {
   const params = config.params || {};
   config.params = Object.assign(params, {});
 
-  const paymentToken = config.url.includes("payment-token");
+  const paymentTokenUrl = config.url.includes("payment-token");
+  const cancelOrderUrl = config.url.includes("cancel-order");
 
-  if (paymentToken) {
+  if (paymentTokenUrl || cancelOrderUrl) {
     (config.headers["Content-Type"] = "multipart/form-data"),
       (config.headers["X-Requested-With"] = "XMLHttpRequest"),
       (config.headers["Access-Control-Allow-Origin"] = "*");

@@ -45,7 +45,7 @@
           style="background: #9fc51c"
           :loading="isShowLoader"
           :disabled="isShowLoader"
-          :order-token="item.orderToken"
+          @click="cancel(item)"
         >
           Cancel
         </v-btn>
@@ -126,7 +126,7 @@ export default {
     ...mapGetters(["isShowLoader"])
   },
   methods: {
-    ...mapActions("orders", ["fetchOrders", "fetchDelivery", "makePayment"]),
+    ...mapActions("orders", ["fetchOrders", "fetchDelivery", "makePayment", "cancelOrder"]),
     getOrders(orders) {
       this.fetchOrders(orders);
     },
@@ -138,6 +138,9 @@ export default {
     },
     pay(item) {
       this.makePayment(item.orderToken);
+    },
+    cancel(item) {
+      this.cancelOrder(item.orderToken);
     },
     view(item) {
       window.location.href = `./order-details.php?order_token=${item.orderToken}`;

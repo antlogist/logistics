@@ -80,6 +80,29 @@ const ordersStore = {
       }
 
       dispatch("toggleLoader", false, { root: true });
+    },
+    async cancelOrder({ state, dispatch }, token) {
+      dispatch("toggleLoader", true, { root: true });
+      try {
+        const response = await ordersApi.cancelOrder(token);
+        if (response === "false") {
+          alert("Something Went Wrong");
+        } else {
+          console.log({ response });
+          for (var i = 0; i < state.orders.length; i++) {
+            if (token === state.orders[i].orderToken) {
+              state.orders[i].status = "canceled";
+              break;
+            }
+          }
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        dispatch("toggleLoader", false, { root: true });
+      }
+
+      
     }
   }
 };
