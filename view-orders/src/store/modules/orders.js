@@ -64,6 +64,21 @@ const ordersStore = {
         }
       }
       dispatch("toggleLoader", false, { root: true });
+    },
+    async makePayment({ dispatch }, token) {
+      dispatch("toggleLoader", true, { root: true });
+      try {
+        const response = await ordersApi.makePayment(token);
+        if (response.trim() === "false") {
+          alert("Something Went Wrong");
+        } else {
+          window.location.href = response;
+        }
+      } catch (err) {
+        console.log(err);
+      }
+
+      dispatch("toggleLoader", false, { root: true });
     }
   }
 };
