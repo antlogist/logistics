@@ -25,6 +25,18 @@ class Orders {
       console.log(err);
     }
   }
+  
+  async cancelOrder(token) {
+    const data = new FormData();
+    data.append("order_token", token);
+    try {
+      const response = await axios.post(`../inc/cancel-order.php`, data);
+      console.log({ response });
+      return response;
+    } catch (err) {
+      console.log(err);
+    }
+  }
 }
 
 const ordersApi = new Orders();
