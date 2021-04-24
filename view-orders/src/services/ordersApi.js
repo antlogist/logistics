@@ -8,7 +8,24 @@ class Orders {
       );
       return response;
     } catch (err) {
-      console.log({ ordersApi: err });
+      console.log({
+        ordersApi: err
+      });
+    }
+  }
+
+  async makePayment(token) {
+    const data = {
+      order_token: token
+    };
+    try {
+      const response = await axios.post(
+        `/inc/payment-token.php`,
+        JSON.stringify(data)
+      );
+      return response;
+    } catch (err) {
+      console.log(err);
     }
   }
 }

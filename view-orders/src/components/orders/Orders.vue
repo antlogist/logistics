@@ -5,7 +5,7 @@
       :items="orders"
       :items-per-page="5"
       @current-items="currentItems"
-      :sort-by="['created_at']"
+      sort-by="id"
       :sort-desc="[true]"
       class="elevation-1"
     >
@@ -20,6 +20,7 @@
             :loading="isShowLoader"
             :disabled="isShowLoader"
             :order-token="item.orderToken"
+            @click="pay(item)"
           >
             Pay
           </v-btn>
@@ -123,7 +124,7 @@ export default {
     ...mapGetters(["isShowLoader"])
   },
   methods: {
-    ...mapActions("orders", ["fetchOrders", "fetchDelivery"]),
+    ...mapActions("orders", ["fetchOrders", "fetchDelivery", "makePayment"]),
     getOrders(orders) {
       this.fetchOrders(orders);
     },
@@ -132,6 +133,9 @@ export default {
     },
     editOrder(item) {
       window.location.href = `./edit-order.php?order_token=${item.orderToken}`;
+    },
+    pay(item) {
+      this.makePayment(item.orderToken);
     },
     view(item) {
       window.location.href = `./order-details.php?order_token=${item.orderToken}`;
