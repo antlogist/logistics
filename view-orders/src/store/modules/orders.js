@@ -3,14 +3,14 @@ import mutations from "@/store/mutations";
 
 function serializeOrders(orders) {
   return orders.reduce((acc, order) => {
-    let { id, created_at, total_price, payment_status, order_token } = order;
+    let { id, created_at, total_price, status, order_token } = order;
     return [
       ...acc,
       {
         id: id,
         createdAt: created_at,
         totalPrice: total_price,
-        paymentStatus: payment_status,
+        status: status,
         orderToken: order_token,
         deliveryDate: "",
         deliveryTimeslot: "",
@@ -36,11 +36,13 @@ const ordersStore = {
     }
   },
   actions: {
-    fetchOrders({ commit }, orders) {
+    fetchOrders({ commit, dispatch }, orders) {
+      dispatch("toggleLoader", true, { root: true });
       commit("ORDERS", orders);
+      dispatch("toggleLoader", false, { root: true });
     },
-    async fetchDelivery({ state }, orders) {
-      state.delivery = [];
+    async fetchDelivery({ state, dispatch }, orders) {
+      dispatch("toggleLoader", true, { root: true });
       for (const order of orders) {
         if (order.orderToken) {
           try {
@@ -57,11 +59,11 @@ const ordersStore = {
               }
             }
           } catch (err) {
-            console.log(err);
+            console.log({ orders: err });
           }
         }
       }
-      console.log(state);
+      dispatch("toggleLoader", false, { root: true });
     }
   }
 };
