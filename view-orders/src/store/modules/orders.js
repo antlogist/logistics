@@ -101,8 +101,6 @@ const ordersStore = {
       } finally {
         dispatch("toggleLoader", false, { root: true });
       }
-
-      
     }
   }
 };

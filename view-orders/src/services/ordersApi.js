@@ -25,7 +25,7 @@ class Orders {
       console.log(err);
     }
   }
-  
+
   async cancelOrder(token) {
     const data = new FormData();
     data.append("order_token", token);

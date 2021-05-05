@@ -3,12 +3,20 @@
     <v-data-table
       :headers="headers"
       :items="orders"
-      :items-per-page="5"
+      :items-per-page="10"
       @current-items="currentItems"
       sort-by="id"
       :sort-desc="[true]"
       class="elevation-1"
+      :footer-props="{
+        disableItemsPerPage: true
+      }"
     >
+      <template v-slot:item.status="{ item }">
+        <v-chip :color="getColor(item.status)" small dark>
+          {{ item.status }}
+        </v-chip>
+      </template>
       <template v-slot:item.actions="{ item }">
         <template v-if="item.status !== 'canceled'">
           <!--If the delivery has already been booked-->
@@ -126,7 +134,12 @@ export default {
     ...mapGetters(["isShowLoader"])
   },
   methods: {
-    ...mapActions("orders", ["fetchOrders", "fetchDelivery", "makePayment", "cancelOrder"]),
+    ...mapActions("orders", [
+      "fetchOrders",
+      "fetchDelivery",
+      "makePayment",
+      "cancelOrder"
+    ]),
     getOrders(orders) {
       this.fetchOrders(orders);
     },
@@ -149,6 +162,11 @@ export default {
       if (orders.length > 0) {
         this.fetchDelivery(orders);
       }
+    },
+    getColor(status) {
+      if (status.toLowerCase() === "canceled") return "red";
+      else if (status.toLowerCase() === "pending") return "orange";
+      else return "#9fc51c";
     }
   },
   mounted() {
