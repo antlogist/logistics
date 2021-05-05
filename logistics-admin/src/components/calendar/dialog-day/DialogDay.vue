@@ -4,12 +4,15 @@
       <DialogDayToolbar></DialogDayToolbar>
       <v-container>
         <v-row>
-          <v-col>
+          <v-col cols="4">
             <v-switch
               v-model="dayOff"
               color="red darken-3"
               label="Day off"
             ></v-switch>
+          </v-col>
+          <v-col cols="8">
+            <DialogDayTimeSlots></DialogDayTimeSlots>
           </v-col>
         </v-row>
       </v-container>
@@ -20,6 +23,7 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import DialogDayToolbar from "@/components/calendar/dialog-day/DialogDayToolbar";
+import DialogDayTimeSlots from "@/components/calendar/dialog-day/DialogDayTimeSlots";
 export default {
   name: "DialogDay",
   data: () => ({}),
@@ -51,7 +55,8 @@ export default {
     ...mapActions("calendar", ["createDayoff", "deleteDayoff"])
   },
   components: {
-    DialogDayToolbar
+    DialogDayToolbar,
+    DialogDayTimeSlots
   }
 };
 </script>
