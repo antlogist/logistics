@@ -1,12 +1,11 @@
 <template>
   <v-card flat>
-    <v-card-title class="mb-2 justify-center">Time Slots</v-card-title>
-
+    <v-card-title class="mb-2 justify-center">Time Slots (test)</v-card-title>
     <!--Buttons-->
     <v-card-text>
       <v-row class="justify-center">
         <v-btn-toggle v-model="toggle_exclusive" rounded>
-          <v-btn small>
+          <v-btn small @click="dialogSetTimeShow = true">
             <v-icon small>mdi-plus</v-icon>
           </v-btn>
           <v-btn small>
@@ -47,13 +46,19 @@
         </v-list-item>
       </template>
     </v-virtual-scroll>
+    <DialogSetTime
+      :dialogSetTimeOpen="dialogSetTimeShow"
+      @dialogSetTimeClose="dialogSetTimeClose"
+    ></DialogSetTime>
   </v-card>
 </template>
 
 <script>
+import DialogSetTime from "@/components/calendar/dialog-day/DialogSetTime";
 export default {
   name: "DialogTimeSlots",
   data: () => ({
+    dialogSetTimeShow: false,
     toggle_exclusive: undefined,
     timeslots: [
       {
@@ -99,6 +104,14 @@ export default {
         end_at: "10:30"
       }
     ]
-  })
+  }),
+  methods: {
+    dialogSetTimeClose() {
+      this.dialogSetTimeShow = false;
+    }
+  },
+  components: {
+    DialogSetTime
+  }
 };
 </script>

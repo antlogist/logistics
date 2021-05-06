@@ -1,7 +1,7 @@
 <template>
   <v-toolbar dark tile color="#9fc51c">
     <template>
-      <v-btn elevation="6" class="grey darken-3 py-1 px-3 rounded"
+      <v-btn elevation="0" class="grey darken-3 py-1 px-3 rounded"
         >{{ currentDate }}, {{ currentWeekDay }}</v-btn
       >
       <v-spacer></v-spacer>
