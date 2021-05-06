@@ -1,12 +1,11 @@
 <template>
   <v-card flat>
-    <v-card-title class="mb-2 justify-center">Time Slots</v-card-title>
-
+    <v-card-title class="mb-2 justify-center">Time Slots (test)</v-card-title>
     <!--Buttons-->
     <v-card-text>
       <v-row class="justify-center">
         <v-btn-toggle v-model="toggle_exclusive" rounded>
-          <v-btn small>
+          <v-btn small @click="dialogSetTimeShow = true">
             <v-icon small>mdi-plus</v-icon>
           </v-btn>
           <v-btn small>
@@ -47,58 +46,32 @@
         </v-list-item>
       </template>
     </v-virtual-scroll>
+    <DialogSetTime
+      :dialogSetTimeOpen="dialogSetTimeShow"
+      @dialogSetTimeClose="dialogSetTimeClose"
+    ></DialogSetTime>
   </v-card>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
+import DialogSetTime from "@/components/calendar/dialog-day/DialogSetTime";
 export default {
   name: "DialogTimeSlots",
   data: () => ({
-    toggle_exclusive: undefined,
-    timeslots: [
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "09:00",
-        end_at: "09:30"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "09:30",
-        end_at: "10:00"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "10:00",
-        end_at: "10:30"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "10:00",
-        end_at: "10:30"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "10:00",
-        end_at: "10:30"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "10:00",
-        end_at: "10:30"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "10:00",
-        end_at: "10:30"
-      }
-    ]
-  })
+    dialogSetTimeShow: false,
+    toggle_exclusive: undefined
+  }),
+  computed: {
+    ...mapGetters("timeslots", ["timeslots"])
+  },
+  methods: {
+    dialogSetTimeClose() {
+      this.dialogSetTimeShow = false;
+    }
+  },
+  components: {
+    DialogSetTime
+  }
 };
 </script>
