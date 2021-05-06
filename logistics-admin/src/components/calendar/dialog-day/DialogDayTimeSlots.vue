@@ -54,57 +54,17 @@
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 import DialogSetTime from "@/components/calendar/dialog-day/DialogSetTime";
 export default {
   name: "DialogTimeSlots",
   data: () => ({
     dialogSetTimeShow: false,
-    toggle_exclusive: undefined,
-    timeslots: [
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "09:00",
-        end_at: "09:30"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "09:30",
-        end_at: "10:00"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "10:00",
-        end_at: "10:30"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "10:00",
-        end_at: "10:30"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "10:00",
-        end_at: "10:30"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "10:00",
-        end_at: "10:30"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "10:00",
-        end_at: "10:30"
-      }
-    ]
+    toggle_exclusive: undefined
   }),
+  computed: {
+    ...mapGetters("timeslots", ["timeslots"])
+  },
   methods: {
     dialogSetTimeClose() {
       this.dialogSetTimeShow = false;
