@@ -296,6 +296,7 @@ export default {
       "fetchOrderInfo",
       "fetchOrdersInfo"
     ]),
+    ...mapActions("timeslots", ["setCurrentWeekday", "setCurrentDate"]),
     viewDay({ date }) {
       this.focus = date;
       this.type = "day";
@@ -332,6 +333,8 @@ export default {
       console.log(monthOne, monthTwo);
     },
     openDialog(data) {
+      this.setCurrentWeekday(data.weekday);
+      this.setCurrentDate(data.date);
       this.openDayDialog(data);
     },
     prev() {
