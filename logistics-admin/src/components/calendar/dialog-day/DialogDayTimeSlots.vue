@@ -27,17 +27,11 @@
           <div class="d-flex">
             <v-btn icon x-small class="mx-1">
               <v-icon color="orange darken-4">
-                mdi-content-copy
-              </v-icon>
-            </v-btn>
-
-            <v-btn icon x-small class="mx-1">
-              <v-icon color="orange darken-4">
                 mdi-pen
               </v-icon>
             </v-btn>
 
-            <v-btn icon x-small class="mx-1">
+            <v-btn icon x-small class="mx-1" @click="deleteItem(item.id)">
               <v-icon color="orange darken-4">
                 mdi-delete
               </v-icon>
@@ -54,7 +48,7 @@
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import DialogSetTime from "@/components/calendar/dialog-day/DialogSetTime";
 export default {
   name: "DialogTimeSlots",
@@ -66,8 +60,13 @@ export default {
     ...mapGetters("timeslots", ["timeslots"])
   },
   methods: {
+    ...mapActions("timeslots", ["deleteTimeslots"]),
     dialogSetTimeClose() {
       this.dialogSetTimeShow = false;
+    },
+    deleteItem(id) {
+      console.log(id);
+      this.deleteTimeslots(id);
     }
   },
   components: {

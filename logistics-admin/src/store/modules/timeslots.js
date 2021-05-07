@@ -3,26 +3,7 @@ import timeslotsApi from "@/services/timeslotsApi";
 const timeslotsStore = {
   namespaced: true,
   state: {
-    timeslots: [
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "09:00",
-        end_at: "09:30"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "09:30",
-        end_at: "10:00"
-      },
-      {
-        date: "2021-01-19",
-        weekday: "0",
-        start_at: "10:00",
-        end_at: "10:30"
-      }
-    ],
+    timeslots: [],
     currentWeekday: "",
     currentDate: ""
   },
@@ -37,7 +18,7 @@ const timeslotsStore = {
     setCurrentDate({ state }, currentDate) {
       state.currentDate = currentDate;
     },
-    async addCustomTimeslot({ state }, { timeStartAt, timeEndAt }) {
+    async addCustomTimeslot({ state, dispatch }, { timeStartAt, timeEndAt }) {
       const timeslot = {
         date: state.currentDate,
         weekday: state.currentWeekday,
@@ -50,11 +31,38 @@ const timeslotsStore = {
         if (response.Error) {
           throw Error(response.Error);
         }
+        dispatch("fetchTimeslots", state.currentDate, { root: false });
       } catch (err) {
         console.log(err);
       } finally {
-        state.timeslots.push(timeslot);
-        //        console.log(state);
+        console.log("addCustomTimeslot finally");
+      }
+    },
+    async fetchTimeslots({ state }, date) {
+      state.timeslots = [];
+      try {
+        const response = await timeslotsApi.fetchCustomTimeslots(date);
+        if (response.Error) {
+          throw Error(response.Error);
+        }
+        state.timeslots = response["timeslots"];
+      } catch (err) {
+        console.log(err);
+      } finally {
+        console.log("fetchTimeslots finally");
+      }
+    },
+    async deleteTimeslots({ state, dispatch }, id) {
+      try {
+        const response = await timeslotsApi.deleteTimeslots(id);
+        if (response.Error) {
+          throw Error(response.Error);
+        }
+        dispatch("fetchTimeslots", state.currentDate, { root: false });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        console.log("deleteTimeslots finally");
       }
     }
   }

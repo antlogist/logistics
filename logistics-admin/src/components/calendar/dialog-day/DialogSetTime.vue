@@ -118,7 +118,11 @@ export default {
       this.$emit("dialogSetTimeClose");
     },
     setSlotTime(timeslot) {
-      if (this.timeStartAt !== null && this.timeEndAt !== null) {
+      if (this.timeStartAt === null || this.timeEndAt === null) {
+        return;
+      }
+
+      if (this.timeStartAt < this.timeEndAt) {
         this.addCustomTimeslot(timeslot);
         this.dialogSetTimeClose();
       }
