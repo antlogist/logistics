@@ -1,12 +1,12 @@
 <template>
-  <v-dialog v-model="dialogSetTimeOpen" max-width="500px">
+  <v-dialog v-model="dialogSetTimeOpen" max-width="500px" persistent>
     <v-card>
       <v-toolbar dark tile color="#9fc51c">
         <template>
           <v-btn
             elevation="9"
             class="grey darken-3 py-1 px-3 rounded"
-            @click="setSlotTime"
+            @click="setSlotTime({ timeStartAt, timeEndAt })"
             >Set Time</v-btn
           >
           <v-spacer></v-spacer>
@@ -94,6 +94,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 export default {
   name: "DialogSetTime",
   props: {
@@ -110,13 +111,17 @@ export default {
     menuEndAt: false
   }),
   methods: {
+    ...mapActions("timeslots", ["addCustomTimeslot"]),
     dialogSetTimeClose() {
       this.timeStartAt = null;
       this.timeEndAt = null;
       this.$emit("dialogSetTimeClose");
     },
-    setSlotTime() {
-      this.dialogSetTimeClose();
+    setSlotTime(timeslot) {
+      if (this.timeStartAt !== null && this.timeEndAt !== null) {
+        this.addCustomTimeslot(timeslot);
+        this.dialogSetTimeClose();
+      }
     }
   }
 };

@@ -1,3 +1,5 @@
+import timeslotsApi from "@/services/timeslotsApi";
+
 const timeslotsStore = {
   namespaced: true,
   state: {
@@ -20,13 +22,42 @@ const timeslotsStore = {
         start_at: "10:00",
         end_at: "10:30"
       }
-    ]
+    ],
+    currentWeekday: "",
+    currentDate: ""
   },
   getters: {
     timeslots: ({ timeslots }) => timeslots
   },
   mutations: {},
-  actions: {}
+  actions: {
+    setCurrentWeekday({ state }, weekday) {
+      state.currentWeekday = weekday;
+    },
+    setCurrentDate({ state }, currentDate) {
+      state.currentDate = currentDate;
+    },
+    async addCustomTimeslot({ state }, { timeStartAt, timeEndAt }) {
+      const timeslot = {
+        date: state.currentDate,
+        weekday: state.currentWeekday,
+        start_at: timeStartAt,
+        end_at: timeEndAt
+      };
+
+      try {
+        const response = await timeslotsApi.createCustomTimeslot(timeslot);
+        if (response.Error) {
+          throw Error(response.Error);
+        }
+      } catch (err) {
+        console.log(err);
+      } finally {
+        state.timeslots.push(timeslot);
+        //        console.log(state);
+      }
+    }
+  }
 };
 
 export default timeslotsStore;
