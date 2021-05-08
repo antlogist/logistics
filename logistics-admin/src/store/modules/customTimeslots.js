@@ -1,6 +1,6 @@
-import timeslotsApi from "@/services/timeslotsApi";
+import customTimeslotsApi from "@/services/customTimeslotsApi";
 
-const timeslotsStore = {
+const customTimeslotsStore = {
   namespaced: true,
   state: {
     timeslots: [],
@@ -27,7 +27,9 @@ const timeslotsStore = {
       };
 
       try {
-        const response = await timeslotsApi.createCustomTimeslot(timeslot);
+        const response = await customTimeslotsApi.createCustomTimeslot(
+          timeslot
+        );
         if (response.Error) {
           throw Error(response.Error);
         }
@@ -41,7 +43,7 @@ const timeslotsStore = {
     async fetchTimeslots({ state }, date) {
       state.timeslots = [];
       try {
-        const response = await timeslotsApi.fetchCustomTimeslots(date);
+        const response = await customTimeslotsApi.fetchCustomTimeslots(date);
         if (response.Error) {
           throw Error(response.Error);
         }
@@ -52,9 +54,9 @@ const timeslotsStore = {
         console.log("fetchTimeslots finally");
       }
     },
-    async deleteTimeslots({ state, dispatch }, id) {
+    async deleteTimeslot({ state, dispatch }, id) {
       try {
-        const response = await timeslotsApi.deleteTimeslots(id);
+        const response = await customTimeslotsApi.deleteTimeslot(id);
         if (response.Error) {
           throw Error(response.Error);
         }
@@ -62,10 +64,32 @@ const timeslotsStore = {
       } catch (err) {
         console.log(err);
       } finally {
-        console.log("deleteTimeslots finally");
+        console.log("deleteTimeslot finally");
+      }
+    },
+    async updateCustomTimeslot(
+      { dispatch, state },
+      { id, timeStartAt, timeEndAt }
+    ) {
+      const timeslot = {
+        id: id,
+        start_at: timeStartAt,
+        end_at: timeEndAt
+      };
+
+      try {
+        const response = await customTimeslotsApi.updateTimeslot(timeslot);
+        if (response.Error) {
+          throw Error(response.Error);
+        }
+        dispatch("fetchTimeslots", state.currentDate, { root: false });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        console.log("updateCustomTimeslot finally");
       }
     }
   }
 };
 
-export default timeslotsStore;
+export default customTimeslotsStore;

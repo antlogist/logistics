@@ -1,13 +1,13 @@
 <template>
-  <v-dialog v-model="dialogSetTimeOpen" max-width="500px" persistent>
+  <v-dialog v-model="dialogUpdateTimeOpen" max-width="500px" persistent>
     <v-card>
       <v-toolbar dark tile color="#9fc51c">
         <template>
           <v-btn
             elevation="9"
             class="grey darken-3 py-1 px-3 rounded"
-            @click="setSlotTime({ timeStartAt, timeEndAt })"
-            >Set Time</v-btn
+            @click="updateSlotTime({ id, timeStartAt, timeEndAt })"
+            >Update Time</v-btn
           >
           <v-spacer></v-spacer>
           <v-btn x-small fab color="grey darken-3" dark @click="close">
@@ -90,35 +90,47 @@
 <script>
 import { mapActions } from "vuex";
 export default {
-  name: "DialogSetTime",
+  name: "DialogUpdateTime",
   props: {
-    dialogSetTimeOpen: {
+    dialogUpdateTimeOpen: {
       default: () => false,
       type: Boolean
+    },
+    item: {
+      default: () => ({}),
+      type: Object
     }
   },
   data: () => ({
+    id: null,
     timeStartAt: null,
     timeEndAt: null,
     menuStartAt: false,
     menuEndAt: false
   }),
   methods: {
-    ...mapActions("customTimeslots", ["addCustomTimeslot"]),
+    ...mapActions("customTimeslots", ["updateCustomTimeslot"]),
     close() {
-      this.timeStartAt = null;
-      this.timeEndAt = null;
-      this.$emit("dialogSetTimeClose");
+      //      this.timeStartAt = null;
+      //      this.timeEndAt = null;
+      this.$emit("dialogUpdateTimeClose");
     },
-    setSlotTime(timeslot) {
+    updateSlotTime(timeslot) {
       if (this.timeStartAt === null || this.timeEndAt === null) {
         return;
       }
 
       if (this.timeStartAt < this.timeEndAt) {
-        this.addCustomTimeslot(timeslot);
+        this.updateCustomTimeslot(timeslot);
         this.close();
       }
+    }
+  },
+  watch: {
+    item: function({ id, start_at, end_at }) {
+      this.id = id;
+      this.timeStartAt = start_at.slice(0, 5);
+      this.timeEndAt = end_at.slice(0, 5);
     }
   }
 };
