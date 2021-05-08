@@ -65,6 +65,12 @@ export default {
         component: "Map",
         link: "map",
         icon: "mdi-map-marker"
+      },
+      {
+        title: "Timeslots",
+        component: "Timeslots",
+        link: "timeslots",
+        icon: "mdi-clock"
       }
     ],
     group: null
