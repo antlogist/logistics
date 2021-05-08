@@ -4,7 +4,7 @@
     <!--Buttons-->
     <v-card-text>
       <v-row class="justify-center">
-        <v-btn-toggle v-model="toggle_exclusive" rounded>
+        <v-btn-toggle rounded>
           <v-btn small @click="dialogSetTimeShow = true">
             <v-icon small>mdi-plus</v-icon>
           </v-btn>
@@ -61,7 +61,6 @@ export default {
   data: () => ({
     dialogSetTimeShow: false,
     dialogUpdateTimeShow: false,
-    toggle_exclusive: undefined,
     currentItem: {}
   }),
   computed: {

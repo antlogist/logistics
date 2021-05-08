@@ -2,12 +2,27 @@
   <v-container>
     <v-row class="d-flex justify-center">
       <v-card
-        v-for="(timeslot, dIndex) in timeslots"
+        v-for="(timeslot, dIndex) in 7"
         :key="dIndex"
         class="my-3 mx-3"
         style="min-width: 200px;"
       >
         <v-card-title>{{ dIndex }}</v-card-title>
+
+        <!--Buttons-->
+        <v-card-text>
+          <v-row class="justify-center">
+            <v-btn-toggle rounded>
+              <v-btn small @click="openDialogSetTime(dIndex)">
+                <v-icon small>mdi-plus</v-icon>
+              </v-btn>
+              <v-btn small>
+                <v-icon small>mdi-message</v-icon>
+              </v-btn>
+            </v-btn-toggle>
+          </v-row>
+        </v-card-text>
+
         <v-card-text>
           <v-list>
             <v-list-item-group>
@@ -41,16 +56,54 @@
         </v-card-text>
       </v-card>
     </v-row>
+
+    <DialogUpdateDefaultTime
+      :item="currentItem"
+      :dialogUpdateTimeOpen="dialogUpdateTimeShow"
+      @dialogUpdateTimeClose="dialogUpdateTimeClose"
+    ></DialogUpdateDefaultTime>
+
+    <DialogSetDefaultTime
+      :dialogSetTimeOpen="dialogSetTimeShow"
+      @dialogSetTimeClose="dialogSetTimeClose"
+    ></DialogSetDefaultTime>
   </v-container>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
+import DialogSetDefaultTime from "@/components/timeslots/dialog/DialogSetDefaultTime";
+import DialogUpdateDefaultTime from "@/components/timeslots/dialog/DialogUpdateDefaultTime";
 export default {
   name: "Timeslots",
-  data: () => ({}),
+  data: () => ({
+    dialogSetTimeShow: false,
+    dialogUpdateTimeShow: false,
+    currentItem: {}
+  }),
   computed: {
     ...mapGetters("defaultTimeslots", ["timeslots"])
+  },
+  methods: {
+    ...mapActions("defaultTimeslots", ["setCurrentWeekday"]),
+    openDialogSetTime(index) {
+      this.setCurrentWeekday(index), (this.dialogSetTimeShow = true);
+    },
+    dialogSetTimeClose() {
+      this.dialogSetTimeShow = false;
+    },
+    dialogUpdateTimeClose() {
+      this.dialogUpdateTimeShow = false;
+    },
+    editItem(item) {
+      this.currentItem = item;
+      this.dialogUpdateTimeShow = true;
+      console.log(item);
+    }
+  },
+  components: {
+    DialogSetDefaultTime,
+    DialogUpdateDefaultTime
   }
 };
 </script>
