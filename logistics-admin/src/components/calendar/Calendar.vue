@@ -296,7 +296,7 @@ export default {
       "fetchOrderInfo",
       "fetchOrdersInfo"
     ]),
-    ...mapActions("timeslots", [
+    ...mapActions("customTimeslots", [
       "setCurrentWeekday",
       "setCurrentDate",
       "fetchTimeslots"

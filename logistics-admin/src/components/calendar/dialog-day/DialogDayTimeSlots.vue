@@ -25,7 +25,7 @@
           </v-list-item-content>
 
           <div class="d-flex">
-            <v-btn icon x-small class="mx-1">
+            <v-btn icon x-small class="mx-1" @click="editItem(item)">
               <v-icon color="orange darken-4">
                 mdi-pen
               </v-icon>
@@ -44,33 +44,50 @@
       :dialogSetTimeOpen="dialogSetTimeShow"
       @dialogSetTimeClose="dialogSetTimeClose"
     ></DialogSetTime>
+    <DialogUpdateTime
+      :item="currentItem"
+      :dialogUpdateTimeOpen="dialogUpdateTimeShow"
+      @dialogUpdateTimeClose="dialogUpdateTimeClose"
+    ></DialogUpdateTime>
   </v-card>
 </template>
 
 <script>
 import { mapGetters, mapActions } from "vuex";
 import DialogSetTime from "@/components/calendar/dialog-day/DialogSetTime";
+import DialogUpdateTime from "@/components/calendar/dialog-day/DialogUpdateTime";
 export default {
   name: "DialogTimeSlots",
   data: () => ({
     dialogSetTimeShow: false,
-    toggle_exclusive: undefined
+    dialogUpdateTimeShow: false,
+    toggle_exclusive: undefined,
+    currentItem: {}
   }),
   computed: {
-    ...mapGetters("timeslots", ["timeslots"])
+    ...mapGetters("customTimeslots", ["timeslots"])
   },
   methods: {
-    ...mapActions("timeslots", ["deleteTimeslots"]),
+    ...mapActions("customTimeslots", ["deleteTimeslot"]),
     dialogSetTimeClose() {
       this.dialogSetTimeShow = false;
     },
+    dialogUpdateTimeClose() {
+      this.dialogUpdateTimeShow = false;
+    },
     deleteItem(id) {
       console.log(id);
-      this.deleteTimeslots(id);
+      this.deleteTimeslot(id);
+    },
+    editItem(item) {
+      this.currentItem = item;
+      this.dialogUpdateTimeShow = true;
+      console.log(item);
     }
   },
   components: {
-    DialogSetTime
+    DialogSetTime,
+    DialogUpdateTime
   }
 };
 </script>

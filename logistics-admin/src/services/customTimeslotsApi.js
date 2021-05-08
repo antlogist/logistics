@@ -1,6 +1,6 @@
 import axios from "@/plugins/axios/";
 
-class Timeslots {
+class CustomTimeslots {
   async createCustomTimeslot(timeslot) {
     console.log(timeslot);
     const data = {
@@ -26,7 +26,7 @@ class Timeslots {
     return response;
   }
 
-  async deleteTimeslots(id) {
+  async deleteTimeslot(id) {
     const data = {
       id: id
     };
@@ -36,7 +36,21 @@ class Timeslots {
     );
     return response;
   }
+
+  async updateTimeslot(timeslot) {
+    const data = {
+      id: timeslot.id,
+      start_at: timeslot.start_at,
+      end_at: timeslot.end_at
+    };
+
+    const response = await axios.post(
+      `/timeslots/update-custom-timeslot.php`,
+      JSON.stringify(data)
+    );
+    return response;
+  }
 }
 
-const timeslotsApi = new Timeslots();
-export default timeslotsApi;
+const customTimeslotsApi = new CustomTimeslots();
+export default customTimeslotsApi;
