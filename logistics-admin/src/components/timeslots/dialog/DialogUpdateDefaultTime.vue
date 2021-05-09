@@ -109,7 +109,7 @@ export default {
     menuEndAt: false
   }),
   methods: {
-    ...mapActions("customTimeslots", ["updateCustomTimeslot"]),
+    ...mapActions("defaultTimeslots", ["updateDefaultTimeslot"]),
     close() {
       //      this.timeStartAt = null;
       //      this.timeEndAt = null;
@@ -121,7 +121,7 @@ export default {
       }
 
       if (this.timeStartAt < this.timeEndAt) {
-        this.updateCustomTimeslot(timeslot);
+        this.updateDefaultTimeslot(timeslot);
         this.close();
       }
     }

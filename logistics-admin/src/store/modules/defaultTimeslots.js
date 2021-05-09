@@ -49,7 +49,7 @@ const defaultTimeslotsStore = {
         if (response.Error) {
           throw Error(response.Error);
         }
-        dispatch("fetchTimeslots", state.currentDate, { root: false });
+        dispatch("fetchTimeslots", "", { root: false });
       } catch (err) {
         console.log(err);
       } finally {
@@ -57,7 +57,7 @@ const defaultTimeslotsStore = {
       }
     },
     async fetchTimeslots({ state }) {
-      state.timeslots = [];
+      state.timeslots = {};
       try {
         const response = await defaultTimeslotsApi.fetchDefaultTimeslots();
         if (response.Error) {
@@ -68,6 +68,25 @@ const defaultTimeslotsStore = {
         console.log(err);
       } finally {
         console.log("fetchTimeslots finally");
+      }
+    },
+    async updateDefaultTimeslot({ dispatch }, { id, timeStartAt, timeEndAt }) {
+      const timeslot = {
+        id: id,
+        start_at: timeStartAt,
+        end_at: timeEndAt
+      };
+
+      try {
+        const response = await defaultTimeslotsApi.updateTimeslot(timeslot);
+        if (response.Error) {
+          throw Error(response.Error);
+        }
+        dispatch("fetchTimeslots", "", { root: false });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        console.log("updateDefaultTimeslot finally");
       }
     }
   }
