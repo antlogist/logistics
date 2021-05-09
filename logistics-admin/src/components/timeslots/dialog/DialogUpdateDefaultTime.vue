@@ -111,8 +111,8 @@ export default {
   methods: {
     ...mapActions("defaultTimeslots", ["updateDefaultTimeslot"]),
     close() {
-      //      this.timeStartAt = null;
-      //      this.timeEndAt = null;
+      this.timeStartAt = null;
+      this.timeEndAt = null;
       this.$emit("dialogUpdateTimeClose");
     },
     updateSlotTime(timeslot) {

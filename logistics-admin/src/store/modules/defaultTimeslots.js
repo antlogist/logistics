@@ -88,6 +88,20 @@ const defaultTimeslotsStore = {
       } finally {
         console.log("updateDefaultTimeslot finally");
       }
+    },
+
+    async deleteTimeslot({ dispatch }, id) {
+      try {
+        const response = await defaultTimeslotsApi.deleteTimeslot(id);
+        if (response.Error) {
+          throw Error(response.Error);
+        }
+        dispatch("fetchTimeslots", "", { root: false });
+      } catch (err) {
+        console.log(err);
+      } finally {
+        console.log("deleteTimeslot finally");
+      }
     }
   }
 };

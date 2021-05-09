@@ -85,7 +85,11 @@ export default {
     ...mapGetters("defaultTimeslots", ["timeslots"])
   },
   methods: {
-    ...mapActions("defaultTimeslots", ["setCurrentWeekday", "fetchTimeslots"]),
+    ...mapActions("defaultTimeslots", [
+      "setCurrentWeekday",
+      "fetchTimeslots",
+      "deleteTimeslot"
+    ]),
     openDialogSetTime(index) {
       this.setCurrentWeekday(index);
       this.dialogSetTimeShow = true;
@@ -100,6 +104,10 @@ export default {
       this.currentItem = item;
       this.dialogUpdateTimeShow = true;
       console.log(item);
+    },
+    deleteItem(id) {
+      console.log(id);
+      this.deleteTimeslot(id);
     }
   },
   mounted() {

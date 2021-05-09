@@ -33,6 +33,17 @@ class DefaultTimeslots {
     );
     return response;
   }
+
+  async deleteTimeslot(id) {
+    const data = {
+      id: id
+    };
+    const response = await axios.post(
+      `/timeslots/delete-default-timeslot.php`,
+      JSON.stringify(data)
+    );
+    return response;
+  }
 }
 
 const defaultTimeslotsApi = new DefaultTimeslots();
