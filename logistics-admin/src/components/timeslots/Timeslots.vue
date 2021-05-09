@@ -1,11 +1,11 @@
 <template>
   <v-container>
-    <v-row class="d-flex justify-center">
+    <v-row class="d-flex justify-center my-5">
       <v-card
         v-for="(timeslot, dIndex) in 7"
         :key="dIndex"
         class="my-3 mx-3"
-        style="min-width: 200px;"
+        style="min-width: 250px; min-height: 300px;"
       >
         <v-card-title>{{ dIndex }}</v-card-title>
 
@@ -33,8 +33,8 @@
                 <v-list-item-content>
                   <v-list-item-subtitle
                     >{{ item.start_at }} -
-                    {{ item.end_at }}</v-list-item-subtitle
-                  >
+                    {{ item.end_at }}
+                  </v-list-item-subtitle>
                 </v-list-item-content>
 
                 <div class="d-flex">
@@ -87,7 +87,8 @@ export default {
   methods: {
     ...mapActions("defaultTimeslots", ["setCurrentWeekday"]),
     openDialogSetTime(index) {
-      this.setCurrentWeekday(index), (this.dialogSetTimeShow = true);
+      this.setCurrentWeekday(index);
+      this.dialogSetTimeShow = true;
     },
     dialogSetTimeClose() {
       this.dialogSetTimeShow = false;
