@@ -109,10 +109,10 @@ export default {
     menuEndAt: false
   }),
   methods: {
-    ...mapActions("customTimeslots", ["updateCustomTimeslot"]),
+    ...mapActions("defaultTimeslots", ["updateDefaultTimeslot"]),
     close() {
-      //      this.timeStartAt = null;
-      //      this.timeEndAt = null;
+      this.timeStartAt = null;
+      this.timeEndAt = null;
       this.$emit("dialogUpdateTimeClose");
     },
     updateSlotTime(timeslot) {
@@ -121,7 +121,7 @@ export default {
       }
 
       if (this.timeStartAt < this.timeEndAt) {
-        this.updateCustomTimeslot(timeslot);
+        this.updateDefaultTimeslot(timeslot);
         this.close();
       }
     }

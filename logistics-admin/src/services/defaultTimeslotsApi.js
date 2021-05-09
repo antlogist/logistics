@@ -19,6 +19,31 @@ class DefaultTimeslots {
     const response = await axios.get(`/timeslots/read-default-timeslot.php`);
     return response;
   }
+
+  async updateTimeslot(timeslot) {
+    const data = {
+      id: timeslot.id,
+      start_at: timeslot.start_at,
+      end_at: timeslot.end_at
+    };
+
+    const response = await axios.post(
+      `/timeslots/update-default-timeslot.php`,
+      JSON.stringify(data)
+    );
+    return response;
+  }
+
+  async deleteTimeslot(id) {
+    const data = {
+      id: id
+    };
+    const response = await axios.post(
+      `/timeslots/delete-default-timeslot.php`,
+      JSON.stringify(data)
+    );
+    return response;
+  }
 }
 
 const defaultTimeslotsApi = new DefaultTimeslots();
