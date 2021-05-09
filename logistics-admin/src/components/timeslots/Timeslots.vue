@@ -7,7 +7,9 @@
         class="my-3 mx-3"
         style="min-width: 250px; min-height: 300px;"
       >
-        <v-card-title>{{ dIndex }}</v-card-title>
+        <v-card-title class="mb-2" center>{{
+          weekdayNames[dIndex]
+        }}</v-card-title>
 
         <!--Buttons-->
         <v-card-text>
@@ -79,7 +81,16 @@ export default {
   data: () => ({
     dialogSetTimeShow: false,
     dialogUpdateTimeShow: false,
-    currentItem: {}
+    currentItem: {},
+    weekdayNames: [
+      "Sunday",
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday",
+      "Saturday"
+    ]
   }),
   computed: {
     ...mapGetters("defaultTimeslots", ["timeslots"])
