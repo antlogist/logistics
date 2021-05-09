@@ -88,7 +88,7 @@
 </template>
 
 <script>
-//import { mapActions } from "vuex";
+import { mapActions } from "vuex";
 export default {
   name: "DialogSetDefaultTime",
   props: {
@@ -104,7 +104,7 @@ export default {
     menuEndAt: false
   }),
   methods: {
-    //    ...mapActions("customTimeslots", ["addCustomTimeslot"]),
+    ...mapActions("defaultTimeslots", ["addDefaultTimeslot"]),
     close() {
       this.timeStartAt = null;
       this.timeEndAt = null;
@@ -117,7 +117,7 @@ export default {
       }
 
       if (this.timeStartAt < this.timeEndAt) {
-        //        this.addCustomTimeslot(timeslot);
+        this.addDefaultTimeslot(timeslot);
         this.close();
       }
     }
