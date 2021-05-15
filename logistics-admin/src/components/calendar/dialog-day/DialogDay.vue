@@ -12,7 +12,7 @@
             ></v-switch>
           </v-col>
           <v-col cols="8">
-            <DialogDayTimeSlots></DialogDayTimeSlots>
+            <DialogDayTimeSlots :dayOff="dayOff"></DialogDayTimeSlots>
           </v-col>
         </v-row>
       </v-container>

@@ -8,6 +8,7 @@ class CustomTimeslots {
       weekday: timeslot.weekday,
       start_at: timeslot.start_at,
       end_at: timeslot.end_at
+      //      session_id: sessionId
     };
 
     const response = await axios.post(
@@ -29,6 +30,7 @@ class CustomTimeslots {
   async deleteTimeslot(id) {
     const data = {
       id: id
+      //      session_id: sessionId
     };
     const response = await axios.post(
       `/timeslots/delete-custom-timeslot.php`,
@@ -42,6 +44,7 @@ class CustomTimeslots {
       id: timeslot.id,
       start_at: timeslot.start_at,
       end_at: timeslot.end_at
+      //      session_id: sessionId
     };
 
     const response = await axios.post(

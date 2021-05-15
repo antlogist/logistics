@@ -1,5 +1,6 @@
 <template>
   <v-container>
+    <h1 class="text-center my-3 text-uppercase">Time Slots</h1>
     <v-row class="d-flex justify-center my-5">
       <v-card
         v-for="(timeslot, dIndex) in 7"

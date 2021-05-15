@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app style="background-color: ghostwhite">
     <Loader></Loader>
 
     <DialogDay></DialogDay>

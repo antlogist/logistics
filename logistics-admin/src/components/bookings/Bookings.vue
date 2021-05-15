@@ -1,10 +1,14 @@
 <template>
   <v-container class="mb-5">
     <!-- Toolbar row -->
-    <v-row class="child-flex mb-3">
+    <v-row class="mb-1">
       <!-- Month selection -->
-      <div>
-        <v-toolbar flat class="my-3 d-flex justify-center">
+      <v-col cols="6">
+        <v-toolbar
+          flat
+          class="d-flex justify-center"
+          style="background-color: ghostwhite"
+        >
           <v-dialog
             ref="dialog"
             v-model="modalMonth"
@@ -51,15 +55,15 @@
             </v-date-picker>
           </v-dialog>
         </v-toolbar>
-      </div>
+      </v-col>
       <!-- /Month selection -->
 
       <!-- Payment status -->
-      <div>
-        <v-toolbar flat class="my-3">
+      <v-col cols="6">
+        <v-toolbar flat style="background-color: ghostwhite">
           <v-btn-toggle
             class="justify-end mr-1"
-            style="width: 100%;"
+            style="width: 100%;background-color: ghostwhite"
             v-model="search"
             mandatory
             active-class="filter-btn-active"
@@ -99,7 +103,7 @@
             <span>Check the payment status</span>
           </v-tooltip>
         </v-toolbar>
-      </div>
+      </v-col>
       <!-- /Payment status -->
     </v-row>
 

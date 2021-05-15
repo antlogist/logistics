@@ -1,6 +1,6 @@
 <template>
-  <v-card flat>
-    <v-card-title class="mb-2 justify-center">Time Slots (test)</v-card-title>
+  <v-card flat v-if="!dayOff">
+    <v-card-title class="mb-2 justify-center">Time Slots</v-card-title>
     <!--Buttons-->
     <v-card-text>
       <v-row class="justify-center">
@@ -58,6 +58,12 @@ import DialogSetTime from "@/components/calendar/dialog-day/DialogSetTime";
 import DialogUpdateTime from "@/components/calendar/dialog-day/DialogUpdateTime";
 export default {
   name: "DialogTimeSlots",
+  props: {
+    dayOff: {
+      default: () => false,
+      type: Boolean
+    }
+  },
   data: () => ({
     dialogSetTimeShow: false,
     dialogUpdateTimeShow: false,
