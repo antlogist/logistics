@@ -12,7 +12,11 @@
             ></v-switch>
           </v-col>
           <v-col cols="8">
-            <DialogDayTimeSlots :dayOff="dayOff"></DialogDayTimeSlots>
+            <DialogDayDefaultTimeSlots
+              v-if="timeslots.length === 0"
+              :dayOff="dayOff"
+            ></DialogDayDefaultTimeSlots>
+            <DialogDayTimeSlots v-else :dayOff="dayOff"></DialogDayTimeSlots>
           </v-col>
         </v-row>
       </v-container>
@@ -23,7 +27,8 @@
 <script>
 import { mapGetters, mapActions } from "vuex";
 import DialogDayToolbar from "@/components/calendar/dialog-day/DialogDayToolbar";
-import DialogDayTimeSlots from "@/components/calendar/dialog-day/DialogDayTimeSlots";
+import DialogDayTimeSlots from "@/components/calendar/dialog-day/dd-timeslots/DialogDayTimeSlots";
+import DialogDayDefaultTimeSlots from "@/components/calendar/dialog-day/dd-timeslots/DialogDayDefaultTimeSlots";
 export default {
   name: "DialogDay",
   data: () => ({}),
@@ -34,6 +39,7 @@ export default {
       "currentDateId",
       "dayOffs"
     ]),
+    ...mapGetters("customTimeslots", ["timeslots"]),
     dayOff: {
       get() {
         if (this.dayOffs.includes(this.currentDate)) {
@@ -56,7 +62,8 @@ export default {
   },
   components: {
     DialogDayToolbar,
-    DialogDayTimeSlots
+    DialogDayTimeSlots,
+    DialogDayDefaultTimeSlots
   }
 };
 </script>
