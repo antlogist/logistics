@@ -1,10 +1,14 @@
 <template>
   <v-container class="mb-5">
     <!-- Toolbar row -->
-    <v-row class="child-flex">
+    <v-row class="mb-1">
       <!-- Month selection -->
-      <div>
-        <v-toolbar flat class="my-3 d-flex justify-center">
+      <v-col cols="6">
+        <v-toolbar
+          flat
+          class="d-flex justify-center"
+          style="background-color: ghostwhite"
+        >
           <v-select
             v-model="type"
             :items="types"
@@ -17,16 +21,16 @@
             color="#9fc51c"
           ></v-select>
         </v-toolbar>
-      </div>
+      </v-col>
       <!-- /Month selection -->
 
       <!-- Payment status -->
-      <div>
-        <v-toolbar flat class="my-3">
+      <v-col cols="6">
+        <v-toolbar flat style="background-color: ghostwhite">
           <!-- Sorting by payment status -->
           <v-btn-toggle
             class="justify-end mr-1"
-            style="width: 100%;"
+            style="width: 100%;background-color: ghostwhite"
             v-model="setFilter"
             active-class="filter-btn-active"
           >
@@ -71,13 +75,13 @@
           </v-tooltip>
           <!-- / Status checking -->
         </v-toolbar>
-      </div>
+      </v-col>
       <!-- /Payment status -->
     </v-row>
     <!-- /Toolbar row -->
 
     <!-- Month selection -->
-    <v-toolbar class="mb-3" flat>
+    <v-toolbar class="mb-3" flat style="background-color: ghostwhite">
       <v-btn
         fab
         x-small

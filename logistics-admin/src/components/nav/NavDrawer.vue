@@ -9,7 +9,7 @@
       <v-list-item-content>
         <img
           style="max-width: 110px; margin: 0 auto;"
-          src="https://podlesnyy.ru/img/cloche.svg"
+          src="https://wildgarliccatering.com/images/logo-colour.png"
           alt=""
         />
       </v-list-item-content>
