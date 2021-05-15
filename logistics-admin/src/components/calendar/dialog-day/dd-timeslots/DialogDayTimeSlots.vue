@@ -1,6 +1,6 @@
 <template>
   <v-card flat v-if="!dayOff">
-    <v-card-title class="mb-2 justify-center">Time Slots</v-card-title>
+    <v-card-title class="mb-2 justify-center">Custom Time Slots</v-card-title>
     <!--Buttons-->
     <v-card-text>
       <v-row class="justify-center">
@@ -54,8 +54,8 @@
 
 <script>
 import { mapGetters, mapActions } from "vuex";
-import DialogSetTime from "@/components/calendar/dialog-day/DialogSetTime";
-import DialogUpdateTime from "@/components/calendar/dialog-day/DialogUpdateTime";
+import DialogSetTime from "@/components/calendar/dialog-day/dd-timeslots/DialogSetTime";
+import DialogUpdateTime from "@/components/calendar/dialog-day/dd-timeslots/DialogUpdateTime";
 export default {
   name: "DialogTimeSlots",
   props: {
