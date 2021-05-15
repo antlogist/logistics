@@ -15,7 +15,11 @@
       </v-row>
     </v-card-text>
 
-    <v-virtual-scroll :items="timeslots[0]" :item-height="50" height="300">
+    <v-virtual-scroll
+      :items="timeslots[currentWeekday]"
+      :item-height="50"
+      height="300"
+    >
       <template v-slot:default="{ item }">
         <v-list-item>
           <v-list-item-content class="text-center">
@@ -52,7 +56,8 @@ export default {
     this.fetchTimeslots();
   },
   computed: {
-    ...mapGetters("defaultTimeslots", ["timeslots"])
+    ...mapGetters("defaultTimeslots", ["timeslots"]),
+    ...mapGetters("customTimeslots", ["currentWeekday"])
   },
   methods: {
     ...mapActions("defaultTimeslots", ["setCurrentWeekday", "fetchTimeslots"]),

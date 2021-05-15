@@ -7,11 +7,7 @@
   >
     <v-list-item>
       <v-list-item-content>
-        <img
-          style="max-width: 110px; margin: 0 auto;"
-          src="https://wildgarliccatering.com/images/logo-colour.png"
-          alt=""
-        />
+        <img style="max-width: 110px; margin: 0 auto;" src="" alt="" />
       </v-list-item-content>
     </v-list-item>
 

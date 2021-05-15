@@ -8,7 +8,8 @@ const customTimeslotsStore = {
     currentDate: ""
   },
   getters: {
-    timeslots: ({ timeslots }) => timeslots
+    timeslots: ({ timeslots }) => timeslots,
+    currentWeekday: ({ currentWeekday }) => currentWeekday
   },
   mutations: {},
   actions: {
