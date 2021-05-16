@@ -4,8 +4,6 @@ logistics-admin/dist
 logistics-admin/assets
 logistics-admin/public/img
 logistics-admin/package-lock.json
-logistics-admin/src/components/nav/NavDrawer.vue
-logistics-admin/src/components/footer/Footer.vue
 logistics-api/config
 
 user-admin/node_modules
@@ -13,6 +11,12 @@ user-admin/dist
 user-admin/assets
 user-admin/public/img
 user-admin/package-lock.json
+
+logistics-user/node_modules
+logistics-user/dist
+logistics-user/assets
+logistics-user/public/img
+logistics-user/package-lock.json
 
 view-orders/node_modules
 view-orders/dist
