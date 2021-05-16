@@ -1,6 +1,17 @@
 <template>
   <v-container>
     <h1 class="text-center my-3 text-uppercase">Default Time Slots</h1>
+
+    <v-row>
+      <v-col cols="4">
+        <v-switch
+          v-model="slotsMode"
+          color="red darken-3"
+          label="Closable Timeslots"
+        ></v-switch>
+      </v-col>
+    </v-row>
+
     <v-row class="d-flex justify-center my-5">
       <v-card
         v-for="(timeslot, dIndex) in 7"
@@ -94,7 +105,27 @@ export default {
     ]
   }),
   computed: {
-    ...mapGetters("defaultTimeslots", ["timeslots"])
+    ...mapGetters("defaultTimeslots", ["timeslots"]),
+    ...mapGetters("settings", ["settings"]),
+    slotsMode: {
+      get() {
+        if (this.settings["timeslots_mode"] === "none_closable") {
+          return false;
+        } else {
+          return true;
+        }
+      },
+      set(mode) {
+        if (mode === false) {
+          this.updateSettings({
+            name: "timeslots_mode",
+            value: "none_closable"
+          });
+        } else {
+          this.updateSettings({ name: "timeslots_mode", value: "closable" });
+        }
+      }
+    }
   },
   methods: {
     ...mapActions("defaultTimeslots", [
@@ -102,6 +133,7 @@ export default {
       "fetchTimeslots",
       "deleteTimeslot"
     ]),
+    ...mapActions("settings", ["updateSettings"]),
     openDialogSetTime(index) {
       this.setCurrentWeekday(index);
       this.dialogSetTimeShow = true;

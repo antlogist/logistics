@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { mapActions } from "vuex";
 import Loader from "./components/loader/Loader";
 import NavBar from "./components/nav/NavBar";
 import NavDrawer from "./components/nav/NavDrawer";
@@ -26,8 +27,12 @@ import DialogDay from "./components/calendar/dialog-day/DialogDay";
 export default {
   name: "App",
   data: () => ({}),
-  methods: {},
-  mounted() {},
+  methods: {
+    ...mapActions("settings", ["fetchSettings"])
+  },
+  mounted() {
+    this.fetchSettings();
+  },
   components: {
     Loader,
     NavBar,
