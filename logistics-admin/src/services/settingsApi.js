@@ -9,8 +9,8 @@ class Settings {
   async updateSettings(setting) {
     const data = {
       name: setting.name,
-      value: setting.value
-      //      session_id: sessionId
+      value: setting.value,
+      session_id: sessionId
     };
 
     console.log(data);
