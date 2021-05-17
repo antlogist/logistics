@@ -132,7 +132,7 @@
         @change="fetchEvents"
       >
         <!-- Month day-label template-->
-        <template v-slot:day-label="{ today, past, day, date }">
+        <template v-slot:day-label="{ present, past, day, date }">
           <template v-if="past & !dayOffs.includes(date)">
             <!-- If past and not day off-->
             <div>
@@ -173,7 +173,7 @@
         <!-- /Month day-label template -->
 
         <!-- Week and day-label template -->
-        <template v-slot:day-label-header="{ today, past, day, date }">
+        <template v-slot:day-label-header="{ present, past, day, date }">
           <template v-if="past & !dayOffs.includes(date)">
             <!-- If past and not day off-->
             <div>
