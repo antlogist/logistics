@@ -3,25 +3,48 @@
     <v-card>
       <DialogToolbar></DialogToolbar>
       <v-container>
-        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel unde culpa
-        dolorum ut dolores veritatis molestias. Saepe deserunt sequi
-        reprehenderit fugiat. Distinctio quas, saepe asperiores dolor molestias
-        nulla laudantium. Sit!
+        <div class="d-flex flex-column">
+          <v-btn
+            @click="
+              openOrderConfirmation({
+                start_at: item.start_at,
+                end_at: item.end_at
+              })
+            "
+            color="#9fc51c"
+            v-for="(item, index) in timeslots[currentDate]"
+            :key="index"
+            class="my-1"
+            >{{ convertTime(item.start_at) }} -
+            {{ convertTime(item.end_at) }}</v-btn
+          >
+        </div>
+        <h1 class="text-center my-5">Click to confirm your order</h1>
       </v-container>
     </v-card>
   </v-dialog>
 </template>
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 import DialogToolbar from "@/components/booking/dialog/DialogToolbar";
+import { tConvert } from "@/helpers/helpers.js";
 export default {
   name: "Dialog",
   data: () => ({}),
   computed: {
-    ...mapGetters("booking", ["isDayDialogShow"])
+    ...mapGetters("booking", ["isDayDialogShow", "timeslots", "currentDate"])
   },
-  methods: {},
+  methods: {
+    ...mapActions("booking", ["openOrderDialog", "setCurrentTimeslot"]),
+    openOrderConfirmation({ start_at, end_at }) {
+      this.setCurrentTimeslot({ start_at, end_at });
+      this.openOrderDialog();
+    },
+    convertTime(time) {
+      return tConvert(time);
+    }
+  },
   components: {
     DialogToolbar
   }
