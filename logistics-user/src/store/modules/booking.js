@@ -1,22 +1,26 @@
 import bookingApi from "@/services/bookingApi";
 import mutations from "@/store/mutations";
 
-const { DAY_OFFS, SHOW_DIALOG } = mutations;
+const { DAY_OFFS, SHOW_DIALOG, SHOW_ORDER_DIALOG } = mutations;
 
 const bookingStore = {
   namespaced: true,
   state: {
     settings: {},
-    timeslots: [],
+    timeslots: {},
     dayOffs: [],
     currentWeekday: "",
     currentDate: "",
-    isDayDialogShow: false
+    isDayDialogShow: false,
+    isOrderDialogShow: false,
+    start_at: "",
+    end_at: ""
   },
   getters: {
     timeslots: ({ timeslots }) => timeslots,
     dayOffs: ({ dayOffs }) => dayOffs,
     isDayDialogShow: ({ isDayDialogShow }) => isDayDialogShow,
+    isOrderDialogShow: ({ isOrderDialogShow }) => isOrderDialogShow,
     currentDate: ({ currentDate }) => currentDate
   },
   mutations: {
@@ -27,19 +31,33 @@ const bookingStore = {
     },
     [SHOW_DIALOG](state, bool) {
       state.isDayDialogShow = bool;
+    },
+    [SHOW_ORDER_DIALOG](state, bool) {
+      state.isOrderDialogShow = bool;
     }
   },
   actions: {
-    openDayDialog({ commit, state }, data) {
-      console.log("OPEN DAY DIALOG!!!");
-      state.currentDate = data.date;
+    openDayDialog({ commit, state }, date) {
+      state.currentDate = date;
+
       commit("SHOW_DIALOG", true);
     },
     closeDayDialog({ commit }) {
       commit("SHOW_DIALOG", false);
     },
+    openOrderDialog({ commit }) {
+      commit("SHOW_ORDER_DIALOG", true);
+    },
+    closeOrderDialog({ commit }) {
+      commit("SHOW_ORDER_DIALOG", false);
+    },
     setCurrentWeekday({ state }, weekday) {
       state.currentWeekday = weekday;
+    },
+    setCurrentTimeslot({ state }, { start_at, end_at }) {
+      state.start_at = start_at;
+      state.end_at = end_at;
+      console.log(start_at, end_at);
     },
     async fetchTimeslots({ state }) {
       state.timeslots = [];

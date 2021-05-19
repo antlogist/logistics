@@ -32,7 +32,7 @@
       @change="fetchEvents"
     >
       <!-- Month day-label template-->
-      <template v-slot:day-label="{ present, past, day, date }">
+      <template v-slot:day-label="{ present, past, day, date, weekday }">
         <template
           v-if="
             past & dayOffs.includes(date) || present & dayOffs.includes(date)
@@ -40,7 +40,7 @@
         >
           <!-- If past or today and day off-->
           <div>
-            <v-btn color="red lighten-3" fab small elevation="0">{{
+            <v-btn color="red lighten-3" fab small elevation="0" class="my-5">{{
               day
             }}</v-btn>
           </div>
@@ -50,16 +50,31 @@
         <template v-else-if="present || past">
           <!-- If past and not day off-->
           <div>
-            <v-btn fab small elevation="0">{{ day }}</v-btn>
+            <v-btn fab small elevation="0" class="my-5">{{ day }}</v-btn>
           </div>
         </template>
 
         <template v-else-if="!past & dayOffs.includes(date)">
           <!--If day off and not past-->
           <div>
-            <v-btn color="red lighten-3" fab small elevation="0">{{
+            <v-btn color="red lighten-3" class="my-5" fab small elevation="0">{{
               day
             }}</v-btn>
+          </div>
+        </template>
+
+        <template v-else>
+          <!-- If past or today and day off-->
+          <div>
+            <v-btn
+              @click="openDialog({ date, weekday })"
+              color="#9fc51c"
+              fab
+              small
+              elevation="0"
+              class="my-5"
+              >{{ day }}</v-btn
+            >
           </div>
         </template>
       </template>
@@ -113,10 +128,9 @@ export default {
     next() {
       this.$refs.calendar.next();
     },
-    openDialog(data) {
-      console.log(data);
-      this.setCurrentWeekday(data.weekday);
-      this.openDayDialog(data);
+    openDialog({ date, weekday }) {
+      this.setCurrentWeekday(weekday);
+      this.openDayDialog(date);
     }
   }
 };
