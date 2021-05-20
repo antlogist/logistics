@@ -85,21 +85,14 @@ const bookingStore = {
     },
     async fetchTimeslots({ state }) {
       state.timeslots = [];
-      try {
-        await Promise.all([
-          bookingApi.fetchTimeslots(),
-          bookingApi.fetchSettings()
-        ])
-          .then(value => {
-            state.timeslots = value[0]["timeslots"];
-            state.settings = value[1]["data"];
-          })
-          .catch(error => console.log(`Error in promises ${error}`));
-      } catch (err) {
-        console.log(err);
-      } finally {
-        console.log("fetchTimeslots finally");
-      }
+      bookingApi.fetchSettings().then(result => {
+        state.settings = result["data"];
+        bookingApi
+          .fetchTimeslots(state.settings.timeslots_mode)
+          .then(result2 => {
+            state.timeslots = result2["timeslots"];
+          });
+      });
     },
     async fetchDayoffs({ state, commit, dispatch }, datesArr) {
       dispatch("toggleLoader", true, { root: true });

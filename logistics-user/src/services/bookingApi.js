@@ -1,8 +1,14 @@
 import axios from "@/plugins/axios/";
 
 class Booking {
-  async fetchTimeslots() {
-    const response = await axios.get(`/timeslots/read-timeslot.php`);
+  async fetchTimeslots(mode) {
+    let response = "";
+    if (mode === "none_closable") {
+      response = await axios.get(`/timeslots/read-timeslot.php`);
+    } else {
+      response = await axios.get(`/timeslots/read-timeslotv2.php`);
+    }
+
     return response;
   }
 

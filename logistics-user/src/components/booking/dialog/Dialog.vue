@@ -2,7 +2,7 @@
   <v-dialog v-model="isDayDialogShow" max-width="500px" persistent>
     <v-card>
       <DialogToolbar></DialogToolbar>
-      <v-container>
+      <v-container v-if="timeslots[currentDate].length > 0">
         <div class="d-flex flex-column justify-center">
           <v-btn
             @click="
@@ -21,6 +21,11 @@
           >
         </div>
         <h3 class="text-center my-5">Click to confirm your order</h3>
+      </v-container>
+      <v-container v-else>
+        <h3 class="text-center my-5" color="red lighten-3">
+          No available slots
+        </h3>
       </v-container>
     </v-card>
   </v-dialog>
