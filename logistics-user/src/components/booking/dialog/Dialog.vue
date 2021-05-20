@@ -3,7 +3,7 @@
     <v-card>
       <DialogToolbar></DialogToolbar>
       <v-container>
-        <div class="d-flex flex-column">
+        <div class="d-flex flex-column justify-center">
           <v-btn
             @click="
               openOrderConfirmation({
@@ -14,12 +14,13 @@
             color="#9fc51c"
             v-for="(item, index) in timeslots[currentDate]"
             :key="index"
-            class="my-1"
+            class="my-1 align-self-center"
+            style="width: 225px"
             >{{ convertTime(item.start_at) }} -
             {{ convertTime(item.end_at) }}</v-btn
           >
         </div>
-        <h1 class="text-center my-5">Click to confirm your order</h1>
+        <h3 class="text-center my-5">Click to confirm your order</h3>
       </v-container>
     </v-card>
   </v-dialog>
