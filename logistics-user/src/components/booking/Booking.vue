@@ -32,7 +32,7 @@
       @change="fetchEvents"
     >
       <!-- Month day-label template-->
-      <template v-slot:day-label="{ present, past, day, date, weekday }">
+      <template v-slot:day-label="{ present, past, day, date, weekday, month }">
         <template
           v-if="
             past & dayOffs.includes(date) || present & dayOffs.includes(date)
@@ -54,10 +54,18 @@
           </div>
         </template>
 
-        <template v-else-if="!past & dayOffs.includes(date)">
+        <template v-else-if="!past && dayOffs.includes(date)">
           <!--If day off and not past-->
           <div>
             <v-btn color="red lighten-3" class="my-5" fab small elevation="0">{{
+              day
+            }}</v-btn>
+          </div>
+        </template>
+
+        <template v-else-if="!past && new Date(focus).getMonth() + 1 !== month">
+          <div>
+            <v-btn color="#f5f5f5" class="my-5" fab small elevation="0">{{
               day
             }}</v-btn>
           </div>
@@ -99,6 +107,7 @@ export default {
     const now = Date.now();
     const today = new Date(now);
     this.focus = today.toISOString().substring(0, 10);
+    this.onMounted(this.focus);
   },
   computed: {
     ...mapGetters("booking", ["timeslots", "dayOffs"])
@@ -108,7 +117,8 @@ export default {
       "fetchTimeslots",
       "fetchDayoffs",
       "setCurrentWeekday",
-      "openDayDialog"
+      "openDayDialog",
+      "onMounted"
     ]),
     // On Interval changing
     fetchEvents({ start, end }) {
@@ -119,8 +129,6 @@ export default {
       } else {
         this.fetchDayoffs([monthOne, monthTwo]);
       }
-
-      console.log(monthOne, monthTwo);
     },
     prev() {
       this.$refs.calendar.prev();

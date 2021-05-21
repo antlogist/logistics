@@ -3,12 +3,45 @@
     <h1 class="text-center my-3 text-uppercase">Default Time Slots</h1>
 
     <v-row>
-      <v-col cols="4">
-        <v-switch
-          v-model="slotsMode"
-          color="red darken-3"
-          label="Closable Timeslots"
-        ></v-switch>
+      <v-col cols="4" offset="3">
+        <v-card style="min-height: 200px;">
+          <v-card-actions>
+            <v-switch
+              v-model="slotsMode"
+              color="red darken-3"
+              label="Closable Timeslots"
+            ></v-switch>
+          </v-card-actions>
+
+          <v-card-text>
+            <p class="font-weight-light font-italic">
+              When using <b>closed time slots</b> that when used by one customer
+              it will become unavailable to use by other customers
+            </p>
+          </v-card-text>
+        </v-card>
+      </v-col>
+
+      <v-col cols="2">
+        <v-card style="min-height: 200px;">
+          <v-card-actions>
+            <v-text-field
+              v-model="maxBookings"
+              type="number"
+              label="Max bookings"
+              style="max-width: 100px;"
+              min="0"
+              max="100"
+            ></v-text-field>
+          </v-card-actions>
+
+          <v-card-text>
+            <p class="font-weight-light font-italic">
+              Max bookings per time slot.<br />
+              0 - infinity bookings
+            </p>
+          </v-card-text>
+        </v-card>
       </v-col>
     </v-row>
 
@@ -124,6 +157,14 @@ export default {
         } else {
           this.updateSettings({ name: "timeslots_mode", value: "closable" });
         }
+      }
+    },
+    maxBookings: {
+      get() {
+        return this.settings["max_bookings"];
+      },
+      set(bookings) {
+        this.updateSettings({ name: "max_bookings", value: bookings });
       }
     }
   },

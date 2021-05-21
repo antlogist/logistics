@@ -2,8 +2,8 @@
   <v-dialog v-model="isDayDialogShow" max-width="500px" persistent>
     <v-card>
       <DialogToolbar></DialogToolbar>
-      <v-container>
-        <div class="d-flex flex-column">
+      <v-container v-if="timeslots[currentDate].length > 0">
+        <div class="d-flex flex-column justify-center">
           <v-btn
             @click="
               openOrderConfirmation({
@@ -14,12 +14,18 @@
             color="#9fc51c"
             v-for="(item, index) in timeslots[currentDate]"
             :key="index"
-            class="my-1"
+            class="my-1 align-self-center"
+            style="width: 225px"
             >{{ convertTime(item.start_at) }} -
             {{ convertTime(item.end_at) }}</v-btn
           >
         </div>
-        <h1 class="text-center my-5">Click to confirm your order</h1>
+        <h3 class="text-center my-5">Click to confirm your order</h3>
+      </v-container>
+      <v-container v-else>
+        <h3 class="text-center my-5" color="red lighten-3">
+          No available slots
+        </h3>
       </v-container>
     </v-card>
   </v-dialog>
