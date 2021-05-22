@@ -2,7 +2,7 @@
   <v-dialog v-model="isDayDialogShow" max-width="500px" persistent>
     <v-card>
       <DialogToolbar></DialogToolbar>
-      <v-container v-if="timeslots[currentDate].length > 0">
+      <v-container v-if="timeslots[currentDate] && timeslots[currentDate].length > 0">
         <div class="d-flex flex-column justify-center">
           <v-btn
             @click="

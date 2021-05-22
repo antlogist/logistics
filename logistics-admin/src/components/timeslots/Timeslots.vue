@@ -3,7 +3,7 @@
     <h1 class="text-center my-3 text-uppercase">Default Time Slots</h1>
 
     <v-row>
-      <v-col cols="4" offset="3">
+      <v-col cols="12" md="4" offset-md="3">
         <v-card style="min-height: 200px;">
           <v-card-actions>
             <v-switch
@@ -22,23 +22,29 @@
         </v-card>
       </v-col>
 
-      <v-col cols="2">
-        <v-card style="min-height: 200px;">
+      <v-col cols="12" md="2">
+        <v-card style="min-height: 200px;" v-if="slotsMode === false">
+          <v-card-text>
+            <p class="font-weight-light font-italic">
+              Infinity time slots
+            </p>
+          </v-card-text>
+        </v-card>
+        <v-card style="min-height: 200px;" v-else>
           <v-card-actions>
             <v-text-field
               v-model="maxBookings"
               type="number"
               label="Max bookings"
               style="max-width: 100px;"
-              min="0"
+              min="1"
               max="100"
             ></v-text-field>
           </v-card-actions>
 
           <v-card-text>
             <p class="font-weight-light font-italic">
-              Max bookings per time slot.<br />
-              0 - infinity bookings
+              Max bookings per time slot.
             </p>
           </v-card-text>
         </v-card>
