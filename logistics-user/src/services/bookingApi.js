@@ -6,7 +6,7 @@ class Booking {
     if (mode === "none_closable") {
       response = await axios.get(`/timeslots/read-timeslot.php`);
     } else {
-      response = await axios.get(`/timeslots/read-timeslotv2.php`);
+      response = await axios.get(`/timeslots/read-timeslotv3.php`);
     }
 
     return response;
